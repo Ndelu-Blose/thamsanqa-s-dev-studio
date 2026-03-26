@@ -1,30 +1,35 @@
 import { motion } from "framer-motion";
-import { ArrowDown, Mail, Sparkles } from "lucide-react";
+import {
+  ArrowDown,
+  Github,
+  Linkedin,
+  Sparkles,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Hero = () => {
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-16">
+    <section id="home" className="min-h-screen flex items-center relative overflow-hidden pt-24 pb-10">
       {/* Grid pattern background */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
+      <div className="absolute inset-0 bg-grid-pattern opacity-25 pointer-events-none" />
 
-      {/* Ambient glow orbs */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/4 w-[700px] h-[700px] bg-primary/8 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
+      {/* Subtle ambient accent */}
+      <div className="absolute top-28 left-1/3 w-[420px] h-[420px] bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        <div className="grid gap-8 sm:gap-10 lg:gap-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-3xl rounded-2xl border border-white/10 bg-background/55 backdrop-blur-sm p-5 sm:p-0 sm:border-0 sm:bg-transparent sm:backdrop-blur-0"
           >
             {/* Status badge */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5 mb-8"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 mb-6"
             >
               <Sparkles className="w-3.5 h-3.5 text-primary" />
               <span className="text-primary font-mono text-xs tracking-widest uppercase">
@@ -32,50 +37,97 @@ const Hero = () => {
               </span>
             </motion.div>
 
-            <h1 className="text-5xl sm:text-6xl md:text-8xl font-black leading-[1.05] mb-8 tracking-tight">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-black leading-[1.03] tracking-tight mb-5 sm:mb-6">
               Thamsanqa{" "}
               <span className="text-gradient">Ndelu</span>
             </h1>
 
-            <p className="text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl leading-relaxed mb-6">
-              ICT Applications Development Graduate Growing into a Software Engineer Through Practical, Real-World Projects
+            <p className="text-lg sm:text-2xl font-semibold text-foreground leading-snug">
+              ICT Applications Development Graduate
+            </p>
+            <p className="text-base sm:text-xl text-secondary-foreground/75 leading-relaxed mt-1">
+              Growing into a Software Engineer through practical, real-world projects.
             </p>
 
-            <p className="text-secondary-foreground/60 max-w-xl mx-auto text-base leading-relaxed mb-14">
+            <p className="text-secondary-foreground/70 max-w-xl text-sm sm:text-base leading-relaxed mt-5 sm:mt-6">
               Focused on continuous learning, practical development, and building real-world systems that solve meaningful problems.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="hero" size="lg" className="text-base px-10 h-13" asChild>
+            <p className="text-sm text-secondary-foreground/80 mt-4">
+              Based in Durban, South Africa • Open to Opportunities
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-7 sm:mt-8">
+              <Button variant="hero" size="lg" className="text-base px-11 h-12 sm:h-13" asChild>
                 <a href="#projects">
                   <ArrowDown className="w-4 h-4 mr-2" />
                   View Projects
                 </a>
               </Button>
-              <Button variant="heroOutline" size="lg" className="text-base px-10 h-13" asChild>
+              <Button variant="heroOutline" size="lg" className="text-base px-11 h-12 sm:h-13" asChild>
                 <a href="#contact">
-                  <Mail className="w-4 h-4 mr-2" />
                   Contact Me
                 </a>
               </Button>
             </div>
+
+            <div className="hidden lg:flex flex-wrap items-center gap-5 mt-8 text-sm">
+              <a
+                href="https://github.com/Ndelu-Blose"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Github className="w-4 h-4" />
+                GitHub
+              </a>
+              <a
+                href="https://www.linkedin.com/in/thamsanqa-ndelu"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Linkedin className="w-4 h-4" />
+                LinkedIn
+              </a>
+            </div>
           </motion.div>
 
-          {/* Scroll indicator */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2, duration: 0.8 }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="mx-auto w-full max-w-[300px] sm:max-w-[360px] lg:max-w-[460px]"
           >
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center p-1.5"
-            >
-              <div className="w-1 h-2 rounded-full bg-primary/60" />
-            </motion.div>
+            <div className="aspect-[4/5] w-full rounded-xl border border-white/10 overflow-hidden bg-white/5">
+              <img
+                src="/profile.png"
+                alt="Portrait of Thamsanqa Ndelu"
+                className="h-full w-full object-cover object-top"
+              />
+            </div>
           </motion.div>
+
+          <div className="flex lg:hidden flex-wrap items-center gap-5 text-sm -mt-2">
+            <a
+              href="https://github.com/Ndelu-Blose"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Github className="w-4 h-4" />
+              GitHub
+            </a>
+            <a
+              href="https://www.linkedin.com/in/thamsanqa-ndelu"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Linkedin className="w-4 h-4" />
+              LinkedIn
+            </a>
+          </div>
         </div>
       </div>
     </section>

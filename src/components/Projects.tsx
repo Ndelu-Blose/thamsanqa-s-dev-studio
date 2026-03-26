@@ -8,27 +8,32 @@ const projects = [
     description: "A practical system demonstrating problem-solving and structured application development with a modern frontend and robust backend architecture.",
     tech: ["React", "Node.js", "REST API"],
     github: "https://github.com/Ndelu-Blose",
+    demo: "https://github.com/Ndelu-Blose",
     color: "174 62% 47%",
   },
   {
     title: "OLI",
     description: "A system focused on operational workflows, tracking, and real-world system architecture with containerized deployment.",
     tech: ["FastAPI", "React", "PostgreSQL", "Docker"],
-    github: "https://github.com/Ndelu-Blose",
+    github: "https://github.com/Ndelu-Blose/OLI.git",
+    demo: "https://github.com/Ndelu-Blose/OLI.git",
     color: "190 70% 50%",
   },
   {
     title: "HawkEye",
     description: "A community-driven incident reporting and analytics platform designed for real-world impact and data-driven insights.",
     tech: ["Flask", "SQLAlchemy", "Postgres"],
-    github: "https://github.com/Ndelu-Blose",
+    github: "https://github.com/Ndelu-Blose/hawkeye-incident-system.git",
+    demo: "https://github.com/Ndelu-Blose/hawkeye-incident-system.git",
     color: "200 65% 50%",
   },
   {
     title: "FleetHub",
     description: "A fleet and logistics management concept system showcasing system thinking, scalability, and efficient resource tracking.",
     tech: ["React", "Node.js", "PostgreSQL"],
-    github: "https://github.com/Ndelu-Blose",
+    github: "https://github.com/Ndelu-Blose/Fleet_Rental_System.git",
+    demo: "https://fleet-rental-system.vercel.app/",
+    livePreview: true,
     color: "180 60% 45%",
   },
 ];
@@ -61,14 +66,31 @@ const Projects = () => {
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="group relative rounded-2xl border border-border bg-card overflow-hidden shadow-card hover:shadow-card-hover hover:border-primary/40 transition-all duration-500 hover:-translate-y-1"
             >
-              {/* Project thumbnail placeholder */}
+              {/* Project thumbnail */}
               <div className="h-48 bg-secondary/50 relative overflow-hidden">
-                <div className="absolute inset-0 bg-grid-pattern opacity-20" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="p-4 rounded-2xl bg-card/80 backdrop-blur-sm border border-border">
-                    <Folder className="w-10 h-10 text-primary/70" />
-                  </div>
-                </div>
+                {project.livePreview && project.demo ? (
+                  <>
+                    <iframe
+                      title={`${project.title} live preview`}
+                      src={project.demo}
+                      loading="lazy"
+                      className="absolute inset-0 h-full w-full border-0 pointer-events-none"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/35 via-transparent to-transparent" />
+                    <span className="absolute top-3 left-3 text-[11px] font-medium px-2 py-1 rounded-full border border-white/20 bg-black/40 text-white/90 backdrop-blur">
+                      Live Preview
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <div className="absolute inset-0 bg-grid-pattern opacity-20" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="p-4 rounded-2xl bg-card/80 backdrop-blur-sm border border-border">
+                        <Folder className="w-10 h-10 text-primary/70" />
+                      </div>
+                    </div>
+                  </>
+                )}
                 {/* Hover gradient overlay */}
                 <div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -109,7 +131,7 @@ const Projects = () => {
                     </a>
                   </Button>
                   <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary" asChild>
-                    <a href={project.github} target="_blank" rel="noopener noreferrer">
+                    <a href={project.demo ?? project.github} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="w-4 h-4 mr-2" />
                       Live Demo
                     </a>

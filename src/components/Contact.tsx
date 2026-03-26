@@ -26,7 +26,7 @@ const Contact = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Button variant="hero" size="lg" className="text-base px-10 h-13" asChild>
-              <a href="mailto:thamsanqa.ndelu@example.com">
+              <a href="mailto:thamsanqandelu0210@gmail.com">
                 <Mail className="w-4 h-4 mr-2" />
                 Send Email
               </a>
@@ -43,7 +43,7 @@ const Contact = () => {
             {[
               { href: "https://github.com/Ndelu-Blose", icon: Github, label: "GitHub" },
               { href: "https://www.linkedin.com/in/thamsanqa-ndelu", icon: Linkedin, label: "LinkedIn" },
-              { href: "mailto:thamsanqa.ndelu@example.com", icon: Mail, label: "Email" },
+              { href: "mailto:thamsanqandelu0210@gmail.com", icon: Mail, label: "Email" },
             ].map((link) => (
               <a
                 key={link.label}
