@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 @layer base {
   :root {
@@ -49,6 +49,7 @@
     --gradient-card: linear-gradient(145deg, hsl(220 18% 12%), hsl(220 18% 9%));
     --shadow-glow: 0 0 30px -5px hsl(174 62% 47% / 0.15);
     --shadow-card: 0 8px 32px -8px hsl(0 0% 0% / 0.4);
+    --shadow-card-hover: 0 16px 48px -12px hsl(0 0% 0% / 0.5);
   }
 }
 
@@ -82,5 +83,21 @@
 
   .shadow-card {
     box-shadow: var(--shadow-card);
+  }
+
+  .shadow-card-hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .bg-grid-pattern {
+    background-image:
+      linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  .bg-dot-pattern {
+    background-image: radial-gradient(circle, hsl(var(--border) / 0.5) 1px, transparent 1px);
+    background-size: 32px 32px;
   }
 }
