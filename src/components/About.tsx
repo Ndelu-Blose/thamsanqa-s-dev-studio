@@ -9,14 +9,14 @@ const highlights = [
 
 const About = () => {
   return (
-    <section id="about" className="py-32">
-      <div className="container mx-auto px-6">
+    <section id="about" className="py-20 sm:py-24 lg:py-28">
+      <div className="container mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-16"
+          className="mb-10 sm:mb-14"
         >
           <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">Background</p>
           <h2 className="text-3xl md:text-5xl font-bold">
@@ -24,7 +24,7 @@ const About = () => {
           </h2>
         </motion.div>
 
-        <div className="grid lg:grid-cols-5 gap-12 items-start">
+        <div className="grid lg:grid-cols-5 gap-8 sm:gap-10 lg:gap-12 items-start">
           {/* Profile visual + text */}
           <div className="lg:col-span-3 space-y-8">
             <motion.div
@@ -39,10 +39,10 @@ const About = () => {
                 <User className="w-8 h-8 text-primary/60" />
               </div>
               <div>
-                <p className="text-foreground/85 text-lg leading-relaxed mb-6">
+                <p className="text-foreground/85 text-base sm:text-lg leading-relaxed mb-5">
                   I am an ICT Applications Development graduate with a strong interest in software engineering, web development, and building systems that solve real problems. My journey is driven by curiosity, consistency, and the desire to keep improving through practical work.
                 </p>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
                   I am currently focused on strengthening my skills through hands-on projects, sharpening my development workflow, and growing into a well-rounded software engineer capable of building useful and impactful solutions.
                 </p>
               </div>
@@ -58,7 +58,7 @@ const About = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
-                className="group flex items-start gap-4 p-5 rounded-xl bg-card border border-border hover:border-primary/40 hover:shadow-glow transition-all duration-500"
+              className="group flex items-start gap-4 p-5 sm:p-6 rounded-xl bg-card border border-border hover:border-primary/40 hover:shadow-glow transition-all duration-500"
               >
                 <div className="p-2.5 rounded-lg bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors duration-300">
                   <item.icon className="w-5 h-5" />

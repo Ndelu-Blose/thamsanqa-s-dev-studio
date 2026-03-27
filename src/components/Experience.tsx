@@ -49,14 +49,14 @@ const experiences = [
 
 const Experience = () => {
   return (
-    <section id="experience" className="py-28">
-      <div className="container mx-auto px-6">
+    <section id="experience" className="py-20 sm:py-24 lg:py-28">
+      <div className="container mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-14"
+          className="mb-10 sm:mb-14"
         >
           <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">Experience</p>
           <h2 className="text-3xl md:text-5xl font-bold">
@@ -75,7 +75,7 @@ const Experience = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: i * 0.08 }}
-              className="group relative rounded-2xl md:rounded-[1.35rem] border border-white/10 bg-white/[0.045] p-6 md:p-8 transition-all duration-300 hover:border-primary/30 hover:bg-white/[0.06] hover:-translate-y-0.5"
+            className="group relative rounded-2xl md:rounded-[1.35rem] border border-white/10 bg-white/[0.045] p-5 sm:p-6 md:p-8 transition-all duration-300 hover:border-primary/30 hover:bg-white/[0.06] hover:-translate-y-0.5"
             >
               <span
                 aria-hidden="true"

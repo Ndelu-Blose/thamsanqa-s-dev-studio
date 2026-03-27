@@ -31,14 +31,14 @@ const skillCategories = [
 
 const Skills = () => {
   return (
-    <section id="skills" className="py-32">
-      <div className="container mx-auto px-6">
+    <section id="skills" className="py-20 sm:py-24 lg:py-28">
+      <div className="container mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-16"
+          className="mb-10 sm:mb-14"
         >
           <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">Expertise</p>
           <h2 className="text-3xl md:text-5xl font-bold">
@@ -46,7 +46,7 @@ const Skills = () => {
           </h2>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {skillCategories.map((cat, i) => (
             <motion.div
               key={cat.title}
@@ -54,7 +54,7 @@ const Skills = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="group rounded-2xl border border-border bg-card p-6 hover:border-primary/40 hover:shadow-glow transition-all duration-500"
+              className="group rounded-2xl border border-border bg-card p-5 sm:p-6 hover:border-primary/40 hover:shadow-glow transition-all duration-500"
             >
               <div className="flex items-center gap-3 mb-5">
                 <div className="p-2 rounded-lg bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors duration-300">

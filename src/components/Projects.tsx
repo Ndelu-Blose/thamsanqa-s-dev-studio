@@ -24,7 +24,7 @@ const projects = [
     description: "A community-driven incident reporting and analytics platform designed for real-world impact and data-driven insights.",
     tech: ["Flask", "SQLAlchemy", "Postgres"],
     github: "https://github.com/Ndelu-Blose/hawkeye-incident-system.git",
-    demo: "https://github.com/Ndelu-Blose/hawkeye-incident-system.git",
+    demo: "https://hawkeye-incident-system.onrender.com",
     color: "200 65% 50%",
   },
   {
@@ -40,15 +40,15 @@ const projects = [
 
 const Projects = () => {
   return (
-    <section id="projects" className="py-32 relative">
+    <section id="projects" className="py-20 sm:py-24 lg:py-28 relative">
       <div className="absolute inset-0 bg-dot-pattern opacity-30 pointer-events-none" />
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-16"
+          className="mb-10 sm:mb-14"
         >
           <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">Portfolio</p>
           <h2 className="text-3xl md:text-5xl font-bold">
@@ -56,7 +56,7 @@ const Projects = () => {
           </h2>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 gap-8">
+        <div className="grid sm:grid-cols-2 gap-5 sm:gap-7">
           {projects.map((project, i) => (
             <motion.div
               key={project.title}
@@ -67,7 +67,7 @@ const Projects = () => {
               className="group relative rounded-2xl border border-border bg-card overflow-hidden shadow-card hover:shadow-card-hover hover:border-primary/40 transition-all duration-500 hover:-translate-y-1"
             >
               {/* Project thumbnail */}
-              <div className="h-48 bg-secondary/50 relative overflow-hidden">
+              <div className="h-44 sm:h-48 bg-secondary/50 relative overflow-hidden">
                 {project.livePreview && project.demo ? (
                   <>
                     <iframe
@@ -100,7 +100,7 @@ const Projects = () => {
                 />
               </div>
 
-              <div className="p-6">
+              <div className="p-5 sm:p-6">
                 <div className="flex items-start justify-between mb-3">
                   <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
                     {project.title}
@@ -123,14 +123,14 @@ const Projects = () => {
                   ))}
                 </div>
 
-                <div className="flex gap-3">
-                  <Button variant="heroOutline" size="sm" asChild>
+                <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
+                  <Button variant="heroOutline" size="sm" className="w-full sm:w-auto justify-center" asChild>
                     <a href={project.github} target="_blank" rel="noopener noreferrer">
                       <Github className="w-4 h-4 mr-2" />
                       Source Code
                     </a>
                   </Button>
-                  <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary" asChild>
+                  <Button variant="ghost" size="sm" className="w-full sm:w-auto justify-center text-muted-foreground hover:text-primary" asChild>
                     <a href={project.demo ?? project.github} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="w-4 h-4 mr-2" />
                       Live Demo
