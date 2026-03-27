@@ -59,12 +59,17 @@ const Projects = () => {
     if (hoverTimers.current[title]) {
       clearTimeout(hoverTimers.current[title] as ReturnType<typeof setTimeout>);
     }
-    hoverTimers.current[title] = setTimeout(() => {
-      setActivePreview(title);
+    hoverTimers.current[title] = setTimeout(async () => {
       const video = videoRefs.current[title];
       if (!video) return;
       video.currentTime = 0;
-      void video.play();
+      try {
+        await video.play();
+        setActivePreview(title);
+      } catch {
+        // Keep static layer visible if the browser cannot play this video.
+        setActivePreview((current) => (current === title ? null : current));
+      }
     }, 120);
   };
 
@@ -131,15 +136,11 @@ const Projects = () => {
             >
               {/* Project thumbnail */}
               <div className="h-44 sm:h-48 bg-secondary/50 relative overflow-hidden">
-                <div
-                  className={`absolute inset-0 bg-grid-pattern transition-opacity duration-300 ease-in-out ${
-                    canHoverPreview && activePreview === project.title ? "opacity-0" : "opacity-20"
-                  }`}
-                />
+                <div className="absolute inset-0 bg-grid-pattern opacity-20" />
                 <div
                   className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ease-in-out ${
                     canHoverPreview && activePreview === project.title
-                      ? "opacity-0 scale-105"
+                      ? "opacity-25 scale-105"
                       : "opacity-100 scale-100"
                   }`}
                 >
