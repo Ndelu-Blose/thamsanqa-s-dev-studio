@@ -44,6 +44,7 @@ const Projects = () => {
   const [canHoverPreview, setCanHoverPreview] = useState(false);
   const [activePreview, setActivePreview] = useState<string | null>(null);
   const videoRefs = useRef<Record<string, HTMLVideoElement | null>>({});
+  const hoverTimers = useRef<Record<string, ReturnType<typeof setTimeout> | null>>({});
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
@@ -55,20 +56,34 @@ const Projects = () => {
 
   const handleEnter = (title: string, previewVideo?: string) => {
     if (!canHoverPreview || !previewVideo) return;
-    setActivePreview(title);
-    const video = videoRefs.current[title];
-    if (!video) return;
-    video.currentTime = 0;
-    void video.play();
+    if (hoverTimers.current[title]) {
+      clearTimeout(hoverTimers.current[title] as ReturnType<typeof setTimeout>);
+    }
+    hoverTimers.current[title] = setTimeout(() => {
+      setActivePreview(title);
+      const video = videoRefs.current[title];
+      if (!video) return;
+      video.currentTime = 0;
+      void video.play();
+    }, 120);
   };
 
   const handleLeave = (title: string, previewVideo?: string) => {
     if (!canHoverPreview || !previewVideo) return;
+    if (hoverTimers.current[title]) {
+      clearTimeout(hoverTimers.current[title] as ReturnType<typeof setTimeout>);
+      hoverTimers.current[title] = null;
+    }
     setActivePreview((current) => (current === title ? null : current));
     const video = videoRefs.current[title];
     if (!video) return;
     video.pause();
     video.currentTime = 0;
+  };
+
+  const openDemo = (url?: string) => {
+    if (!url) return;
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -88,7 +103,7 @@ const Projects = () => {
           </h2>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 gap-5 sm:gap-7">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-7">
           {projects.map((project, i) => (
             <motion.div
               key={project.title}
@@ -96,16 +111,43 @@ const Projects = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="group relative rounded-2xl border border-border bg-card overflow-hidden shadow-card hover:shadow-card-hover hover:border-primary/40 transition-all duration-500 hover:-translate-y-1"
+              className={`group relative rounded-2xl border border-border bg-card overflow-hidden shadow-card hover:shadow-card-hover hover:border-primary/40 transition-all duration-500 hover:-translate-y-1 ${
+                project.title === "OLI" ? "lg:col-span-2" : ""
+              } ${
+                project.demo ? "cursor-pointer" : ""
+              }`}
               onMouseEnter={() => handleEnter(project.title, project.previewVideo)}
               onMouseLeave={() => handleLeave(project.title, project.previewVideo)}
+              onClick={() => openDemo(project.demo ?? project.github)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  openDemo(project.demo ?? project.github);
+                }
+              }}
+              role={project.demo ? "button" : undefined}
+              tabIndex={project.demo ? 0 : -1}
+              aria-label={project.demo ? `Open ${project.title} live demo` : undefined}
             >
               {/* Project thumbnail */}
               <div className="h-44 sm:h-48 bg-secondary/50 relative overflow-hidden">
-                <div className="absolute inset-0 bg-grid-pattern opacity-20" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="p-4 rounded-2xl bg-card/80 backdrop-blur-sm border border-border">
-                    <Folder className="w-10 h-10 text-primary/70" />
+                <div
+                  className={`absolute inset-0 bg-grid-pattern transition-opacity duration-300 ease-in-out ${
+                    canHoverPreview && activePreview === project.title ? "opacity-0" : "opacity-20"
+                  }`}
+                />
+                <div
+                  className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ease-in-out ${
+                    canHoverPreview && activePreview === project.title
+                      ? "opacity-0 scale-105"
+                      : "opacity-100 scale-100"
+                  }`}
+                >
+                  <div className="text-center px-4">
+                    <div className="mx-auto mb-2 p-3 rounded-xl bg-card/85 backdrop-blur-sm border border-border w-fit">
+                      <Folder className="w-8 h-8 text-primary/75" />
+                    </div>
+                    <p className="text-xs font-medium text-foreground/85">{project.title}</p>
                   </div>
                 </div>
                 {project.previewVideo && (
@@ -117,20 +159,22 @@ const Projects = () => {
                     muted
                     loop
                     playsInline
-                    preload="metadata"
-                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
-                      canHoverPreview && activePreview === project.title ? "opacity-100" : "opacity-0"
+                    preload="auto"
+                    className={`absolute inset-0 h-full w-full object-cover transition-all duration-300 ease-in-out ${
+                      canHoverPreview && activePreview === project.title
+                        ? "opacity-100 scale-105"
+                        : "opacity-0 scale-100"
                     }`}
                   />
                 )}
                 <div
-                  className={`absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent transition-opacity duration-300 ${
+                  className={`absolute inset-0 bg-black/20 transition-opacity duration-300 ease-in-out ${
                     canHoverPreview && activePreview === project.title ? "opacity-100" : "opacity-0"
                   }`}
                 />
                 {/* Hover gradient overlay */}
                 <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
                   style={{
                     background: `linear-gradient(135deg, hsl(${project.color} / 0.1), transparent)`,
                   }}
@@ -160,17 +204,15 @@ const Projects = () => {
                   ))}
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
+                <div
+                  className="flex flex-col sm:flex-row gap-2.5 sm:gap-3"
+                  onClick={(event) => event.stopPropagation()}
+                  onKeyDown={(event) => event.stopPropagation()}
+                >
                   <Button variant="heroOutline" size="sm" className="w-full sm:w-auto justify-center" asChild>
                     <a href={project.github} target="_blank" rel="noopener noreferrer">
                       <Github className="w-4 h-4 mr-2" />
                       Source Code
-                    </a>
-                  </Button>
-                  <Button variant="ghost" size="sm" className="w-full sm:w-auto justify-center text-muted-foreground hover:text-primary" asChild>
-                    <a href={project.demo ?? project.github} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      Live Demo
                     </a>
                   </Button>
                 </div>
