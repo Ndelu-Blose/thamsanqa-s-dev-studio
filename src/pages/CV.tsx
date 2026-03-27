@@ -37,11 +37,34 @@ const CV = () => {
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-white/[0.04] overflow-hidden">
-          <iframe
-            src="/cv.pdf"
-            title="Thamsanqa Ndelu CV"
+          <object
+            data="/cv.pdf#view=FitH&toolbar=1&navpanes=0"
+            type="application/pdf"
             className="w-full h-[75vh] min-h-[420px] sm:min-h-[560px]"
-          />
+            aria-label="Thamsanqa Ndelu CV preview"
+          >
+            <div className="h-full min-h-[420px] sm:min-h-[560px] flex items-center justify-center p-6">
+              <div className="max-w-md text-center space-y-4">
+                <p className="text-sm text-secondary-foreground/85">
+                  PDF preview is not available in this browser.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Button variant="heroOutline" asChild>
+                    <a href="/cv.pdf" target="_blank" rel="noreferrer">
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      Open CV
+                    </a>
+                  </Button>
+                  <Button variant="hero" asChild>
+                    <a href="/cv.pdf" download>
+                      <Download className="w-4 h-4 mr-2" />
+                      Download CV
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </object>
         </div>
 
         <p className="text-sm text-secondary-foreground/80 mt-4">
