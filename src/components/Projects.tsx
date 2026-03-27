@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { ExternalLink, Github, Folder } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -25,6 +26,7 @@ const projects = [
     tech: ["Flask", "SQLAlchemy", "Postgres"],
     github: "https://github.com/Ndelu-Blose/hawkeye-incident-system.git",
     demo: "https://hawkeye-incident-system.onrender.com",
+    previewVideo: "/hawkeye-preview.mp4",
     color: "200 65% 50%",
   },
   {
@@ -33,12 +35,42 @@ const projects = [
     tech: ["React", "Node.js", "PostgreSQL"],
     github: "https://github.com/Ndelu-Blose/Fleet_Rental_System.git",
     demo: "https://fleet-rental-system.vercel.app/",
-    livePreview: true,
+    previewVideo: "/fleethub-preview.mp4",
     color: "180 60% 45%",
   },
 ];
 
 const Projects = () => {
+  const [canHoverPreview, setCanHoverPreview] = useState(false);
+  const [activePreview, setActivePreview] = useState<string | null>(null);
+  const videoRefs = useRef<Record<string, HTMLVideoElement | null>>({});
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const update = () => setCanHoverPreview(mediaQuery.matches);
+    update();
+    mediaQuery.addEventListener("change", update);
+    return () => mediaQuery.removeEventListener("change", update);
+  }, []);
+
+  const handleEnter = (title: string, previewVideo?: string) => {
+    if (!canHoverPreview || !previewVideo) return;
+    setActivePreview(title);
+    const video = videoRefs.current[title];
+    if (!video) return;
+    video.currentTime = 0;
+    void video.play();
+  };
+
+  const handleLeave = (title: string, previewVideo?: string) => {
+    if (!canHoverPreview || !previewVideo) return;
+    setActivePreview((current) => (current === title ? null : current));
+    const video = videoRefs.current[title];
+    if (!video) return;
+    video.pause();
+    video.currentTime = 0;
+  };
+
   return (
     <section id="projects" className="py-20 sm:py-24 lg:py-28 relative">
       <div className="absolute inset-0 bg-dot-pattern opacity-30 pointer-events-none" />
@@ -65,32 +97,37 @@ const Projects = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="group relative rounded-2xl border border-border bg-card overflow-hidden shadow-card hover:shadow-card-hover hover:border-primary/40 transition-all duration-500 hover:-translate-y-1"
+              onMouseEnter={() => handleEnter(project.title, project.previewVideo)}
+              onMouseLeave={() => handleLeave(project.title, project.previewVideo)}
             >
               {/* Project thumbnail */}
               <div className="h-44 sm:h-48 bg-secondary/50 relative overflow-hidden">
-                {project.livePreview && project.demo ? (
-                  <>
-                    <iframe
-                      title={`${project.title} live preview`}
-                      src={project.demo}
-                      loading="lazy"
-                      className="absolute inset-0 h-full w-full border-0 pointer-events-none"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/35 via-transparent to-transparent" />
-                    <span className="absolute top-3 left-3 text-[11px] font-medium px-2 py-1 rounded-full border border-white/20 bg-black/40 text-white/90 backdrop-blur">
-                      Live Preview
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <div className="absolute inset-0 bg-grid-pattern opacity-20" />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="p-4 rounded-2xl bg-card/80 backdrop-blur-sm border border-border">
-                        <Folder className="w-10 h-10 text-primary/70" />
-                      </div>
-                    </div>
-                  </>
+                <div className="absolute inset-0 bg-grid-pattern opacity-20" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="p-4 rounded-2xl bg-card/80 backdrop-blur-sm border border-border">
+                    <Folder className="w-10 h-10 text-primary/70" />
+                  </div>
+                </div>
+                {project.previewVideo && (
+                  <video
+                    ref={(el) => {
+                      videoRefs.current[project.title] = el;
+                    }}
+                    src={project.previewVideo}
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+                      canHoverPreview && activePreview === project.title ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
                 )}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent transition-opacity duration-300 ${
+                    canHoverPreview && activePreview === project.title ? "opacity-100" : "opacity-0"
+                  }`}
+                />
                 {/* Hover gradient overlay */}
                 <div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
