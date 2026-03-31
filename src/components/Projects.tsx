@@ -10,6 +10,7 @@ const projects = [
     tech: ["React", "Node.js", "REST API"],
     github: "https://github.com/Ndelu-Blose",
     demo: "https://github.com/Ndelu-Blose",
+    previewVideo: "/autoedge-preview.mp4",
     previewImage: "/autoedge-thumb.png",
     color: "174 62% 47%",
   },
@@ -19,7 +20,8 @@ const projects = [
     tech: ["FastAPI", "React", "PostgreSQL", "Docker"],
     github: "https://github.com/Ndelu-Blose/OLI.git",
     demo: "https://github.com/Ndelu-Blose/OLI.git",
-    previewImage: "/placeholder.svg",
+    previewVideo: "/oli-preview.mp4",
+    previewImage: "/oli-thumb.png",
     color: "190 70% 50%",
   },
   {
