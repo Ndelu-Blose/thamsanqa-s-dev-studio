@@ -39,7 +39,7 @@ const projects = [
     github: "https://github.com/Ndelu-Blose/Fleet_Rental_System.git",
     demo: "https://fleet-rental-system.vercel.app/",
     previewVideo: "/fleethub-preview.mp4",
-    previewImage: "/placeholder.svg",
+    previewImage: "/fleethub-thumb.png",
     color: "180 60% 45%",
   },
 ];
