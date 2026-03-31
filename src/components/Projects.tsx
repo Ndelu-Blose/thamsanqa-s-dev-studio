@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { ExternalLink, Github, Folder } from "lucide-react";
+import { ExternalLink, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const projects = [
@@ -112,7 +112,7 @@ const Projects = () => {
           </h2>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-7">
+        <div className="grid sm:grid-cols-2 gap-5 sm:gap-7">
           {projects.map((project, i) => (
             <motion.div
               key={project.title}
@@ -121,8 +121,6 @@ const Projects = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className={`group relative rounded-2xl border border-border bg-card overflow-hidden shadow-card hover:shadow-card-hover hover:border-primary/40 transition-all duration-500 hover:-translate-y-1 ${
-                project.title === "OLI" ? "lg:col-span-2" : ""
-              } ${
                 project.demo ? "cursor-pointer" : ""
               }`}
               onMouseEnter={() => handleEnter(project.title, project.previewVideo)}
@@ -145,25 +143,11 @@ const Projects = () => {
                   alt={`${project.title} preview`}
                   className={`absolute inset-0 h-full w-full object-cover transition-all duration-300 ease-in-out ${
                     canHoverPreview && activePreview === project.title
-                      ? "opacity-25 scale-105"
+                      ? "opacity-60 scale-105"
                       : "opacity-100 scale-100"
                   }`}
                 />
                 <div className="absolute inset-0 bg-grid-pattern opacity-20" />
-                <div
-                  className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ease-in-out ${
-                    canHoverPreview && activePreview === project.title
-                      ? "opacity-20 scale-105"
-                      : "opacity-100 scale-100"
-                  }`}
-                >
-                  <div className="text-center px-4">
-                    <div className="mx-auto mb-2 p-3 rounded-xl bg-card/85 backdrop-blur-sm border border-border w-fit">
-                      <Folder className="w-8 h-8 text-primary/75" />
-                    </div>
-                    <p className="text-xs font-medium text-foreground/85">{project.title}</p>
-                  </div>
-                </div>
                 {project.previewVideo && (
                   <video
                     ref={(el) => {
