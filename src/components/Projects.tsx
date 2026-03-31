@@ -10,6 +10,7 @@ const projects = [
     tech: ["React", "Node.js", "REST API"],
     github: "https://github.com/Ndelu-Blose",
     demo: "https://github.com/Ndelu-Blose",
+    previewImage: "/placeholder.svg",
     color: "174 62% 47%",
   },
   {
@@ -18,6 +19,7 @@ const projects = [
     tech: ["FastAPI", "React", "PostgreSQL", "Docker"],
     github: "https://github.com/Ndelu-Blose/OLI.git",
     demo: "https://github.com/Ndelu-Blose/OLI.git",
+    previewImage: "/placeholder.svg",
     color: "190 70% 50%",
   },
   {
@@ -27,6 +29,7 @@ const projects = [
     github: "https://github.com/Ndelu-Blose/hawkeye-incident-system.git",
     demo: "https://hawkeye-incident-system.onrender.com",
     previewVideo: "/hawkeye-preview.mp4",
+    previewImage: "/hawkeye-thumb.png",
     color: "200 65% 50%",
   },
   {
@@ -36,6 +39,7 @@ const projects = [
     github: "https://github.com/Ndelu-Blose/Fleet_Rental_System.git",
     demo: "https://fleet-rental-system.vercel.app/",
     previewVideo: "/fleethub-preview.mp4",
+    previewImage: "/placeholder.svg",
     color: "180 60% 45%",
   },
 ];
@@ -136,11 +140,20 @@ const Projects = () => {
             >
               {/* Project thumbnail */}
               <div className="h-44 sm:h-48 bg-secondary/50 relative overflow-hidden">
+                <img
+                  src={project.previewImage ?? "/placeholder.svg"}
+                  alt={`${project.title} preview`}
+                  className={`absolute inset-0 h-full w-full object-cover transition-all duration-300 ease-in-out ${
+                    canHoverPreview && activePreview === project.title
+                      ? "opacity-25 scale-105"
+                      : "opacity-100 scale-100"
+                  }`}
+                />
                 <div className="absolute inset-0 bg-grid-pattern opacity-20" />
                 <div
                   className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ease-in-out ${
                     canHoverPreview && activePreview === project.title
-                      ? "opacity-25 scale-105"
+                      ? "opacity-20 scale-105"
                       : "opacity-100 scale-100"
                   }`}
                 >

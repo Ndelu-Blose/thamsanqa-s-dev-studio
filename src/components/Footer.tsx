@@ -44,9 +44,19 @@ const Footer = () => {
         </div>
 
         <div className="mt-10 pt-6 border-t border-border text-center">
-          <p className="text-xs text-muted-foreground/60">
-            © {new Date().getFullYear()}{" "}
-            <span className="text-gradient font-medium">Thamsanqa Ndelu</span>. All rights reserved.
+          <p className="text-xs text-muted-foreground/70">
+            © 2026 Thamsanqa Ndelu
+          </p>
+          <p className="text-xs text-muted-foreground/70 mt-1">
+            Built By{" "}
+            <a
+              href="https://www.cliveux.co.za/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              CliveUX
+            </a>
           </p>
         </div>
       </div>
