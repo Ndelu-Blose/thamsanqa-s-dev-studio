@@ -10,7 +10,7 @@ const projects = [
     tech: ["React", "Node.js", "REST API"],
     github: "https://github.com/Ndelu-Blose",
     demo: "https://github.com/Ndelu-Blose",
-    previewImage: "/placeholder.svg",
+    previewImage: "/autoedge-thumb.png",
     color: "174 62% 47%",
   },
   {
