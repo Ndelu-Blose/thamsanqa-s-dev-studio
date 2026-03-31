@@ -1,7 +1,26 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, FileText, Github, GitBranch, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+type Project = {
+  title: string;
+  description: string;
+  tech: string[];
+  github?: string;
+  liveDemo?: string;
+  caseStudy?: string;
+  architecture?: string;
+  previewVideo?: string;
+  previewImage?: string;
+  color: string;
+};
+
+type ProjectAction = {
+  label: string;
+  href: string;
+  icon: LucideIcon;
+};
 
 const projects = [
   {
@@ -9,7 +28,6 @@ const projects = [
     description: "A practical system demonstrating problem-solving and structured application development with a modern frontend and robust backend architecture.",
     tech: ["React", "Node.js", "REST API"],
     github: "https://github.com/Ndelu-Blose",
-    demo: "https://github.com/Ndelu-Blose",
     previewVideo: "/autoedge-preview.mp4",
     previewImage: "/autoedge-thumb.png",
     color: "174 62% 47%",
@@ -19,7 +37,6 @@ const projects = [
     description: "A system focused on operational workflows, tracking, and real-world system architecture with containerized deployment.",
     tech: ["FastAPI", "React", "PostgreSQL", "Docker"],
     github: "https://github.com/Ndelu-Blose/OLI.git",
-    demo: "https://github.com/Ndelu-Blose/OLI.git",
     previewVideo: "/oli-preview.mp4",
     previewImage: "/oli-thumb.png",
     color: "190 70% 50%",
@@ -29,7 +46,7 @@ const projects = [
     description: "A community-driven incident reporting and analytics platform designed for real-world impact and data-driven insights.",
     tech: ["Flask", "SQLAlchemy", "Postgres"],
     github: "https://github.com/Ndelu-Blose/hawkeye-incident-system.git",
-    demo: "https://hawkeye-incident-system.onrender.com",
+    liveDemo: "https://hawkeye-incident-system.onrender.com",
     previewVideo: "/hawkeye-preview.mp4",
     previewImage: "/hawkeye-thumb.png",
     color: "200 65% 50%",
@@ -39,12 +56,61 @@ const projects = [
     description: "A fleet and logistics management concept system showcasing system thinking, scalability, and efficient resource tracking.",
     tech: ["React", "Node.js", "PostgreSQL"],
     github: "https://github.com/Ndelu-Blose/Fleet_Rental_System.git",
-    demo: "https://fleet-rental-system.vercel.app/",
+    liveDemo: "https://fleet-rental-system.vercel.app/",
     previewVideo: "/fleethub-preview.mp4",
     previewImage: "/fleethub-thumb.png",
     color: "180 60% 45%",
   },
-];
+] satisfies Project[];
+
+const buildMailTo = (projectTitle: string, topic: "details" | "architecture") => {
+  const subject =
+    topic === "details"
+      ? `Project details request: ${projectTitle}`
+      : `Architecture write-up request: ${projectTitle}`;
+  const body =
+    topic === "details"
+      ? `Hi Thamsanqa,%0D%0A%0D%0AI would like more details about ${projectTitle}.%0D%0A%0D%0AThanks.`
+      : `Hi Thamsanqa,%0D%0A%0D%0APlease share the architecture write-up for ${projectTitle}.%0D%0A%0D%0AThanks.`;
+  return `mailto:thamsanqandelu0210@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+};
+
+const getProjectActions = (project: Project): ProjectAction[] => {
+  const baseActions: ProjectAction[] = [];
+
+  if (project.liveDemo) {
+    baseActions.push({ label: "Live Demo", href: project.liveDemo, icon: ExternalLink });
+  }
+  if (project.caseStudy) {
+    baseActions.push({ label: "Case Study", href: project.caseStudy, icon: FileText });
+  }
+  if (project.architecture) {
+    baseActions.push({ label: "Architecture", href: project.architecture, icon: GitBranch });
+  }
+  if (project.github) {
+    baseActions.push({ label: "GitHub", href: project.github, icon: Github });
+  }
+
+  const fallbackActions: ProjectAction[] = [
+    {
+      label: "Details on request",
+      href: buildMailTo(project.title, "details"),
+      icon: FileText,
+    },
+    {
+      label: "Architecture write-up",
+      href: buildMailTo(project.title, "architecture"),
+      icon: GitBranch,
+    },
+  ];
+
+  for (const fallbackAction of fallbackActions) {
+    if (baseActions.length >= 2) break;
+    baseActions.push(fallbackAction);
+  }
+
+  return baseActions.slice(0, 4);
+};
 
 const Projects = () => {
   const [canHoverPreview, setCanHoverPreview] = useState(false);
@@ -123,20 +189,20 @@ const Projects = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className={`group relative rounded-2xl border border-border bg-card overflow-hidden shadow-card hover:shadow-card-hover hover:border-primary/40 transition-all duration-500 hover:-translate-y-1 ${
-                project.demo ? "cursor-pointer" : ""
+                project.liveDemo ? "cursor-pointer" : ""
               }`}
               onMouseEnter={() => handleEnter(project.title, project.previewVideo)}
               onMouseLeave={() => handleLeave(project.title, project.previewVideo)}
-              onClick={() => openDemo(project.demo ?? project.github)}
+              onClick={() => openDemo(project.liveDemo)}
               onKeyDown={(event) => {
                 if (event.key === "Enter" || event.key === " ") {
                   event.preventDefault();
-                  openDemo(project.demo ?? project.github);
+                  openDemo(project.liveDemo);
                 }
               }}
-              role={project.demo ? "button" : undefined}
-              tabIndex={project.demo ? 0 : -1}
-              aria-label={project.demo ? `Open ${project.title} live demo` : undefined}
+              role={project.liveDemo ? "button" : undefined}
+              tabIndex={project.liveDemo ? 0 : -1}
+              aria-label={project.liveDemo ? `Open ${project.title} live demo` : undefined}
             >
               {/* Project thumbnail */}
               <div className="h-44 sm:h-48 bg-secondary/50 relative overflow-hidden">
@@ -209,12 +275,28 @@ const Projects = () => {
                   onClick={(event) => event.stopPropagation()}
                   onKeyDown={(event) => event.stopPropagation()}
                 >
-                  <Button variant="heroOutline" size="sm" className="w-full sm:w-auto justify-center" asChild>
-                    <a href={project.github} target="_blank" rel="noopener noreferrer">
-                      <Github className="w-4 h-4 mr-2" />
-                      Source Code
-                    </a>
-                  </Button>
+                  {getProjectActions(project).map((action) => {
+                    const Icon = action.icon;
+                    const isMailTo = action.href.startsWith("mailto:");
+                    return (
+                      <Button
+                        key={`${project.title}-${action.label}`}
+                        variant="heroOutline"
+                        size="sm"
+                        className="w-full sm:w-auto justify-center"
+                        asChild
+                      >
+                        <a
+                          href={action.href}
+                          target={isMailTo ? undefined : "_blank"}
+                          rel={isMailTo ? undefined : "noopener noreferrer"}
+                        >
+                          <Icon className="w-4 h-4 mr-2" />
+                          {action.label}
+                        </a>
+                      </Button>
+                    );
+                  })}
                 </div>
               </div>
             </motion.div>

@@ -6,6 +6,8 @@ const navLinks = [
   { label: "Contact", href: "#contact" },
 ];
 
+const cvLastUpdated = "Mar 2026";
+
 const Footer = () => {
   return (
     <footer className="border-t border-border py-12">
@@ -17,6 +19,9 @@ const Footer = () => {
             </a>
             <p className="text-sm text-muted-foreground mt-2">
               Software Developer · Building real-world systems
+            </p>
+            <p className="text-xs text-muted-foreground/80 mt-1">
+              Durban, South Africa · CV updated {cvLastUpdated}
             </p>
           </div>
 

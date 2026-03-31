@@ -60,6 +60,15 @@ const Hero = () => {
               Based in Durban, South Africa • Open to Opportunities
             </p>
 
+            <div className="mt-6 rounded-xl border border-primary/20 bg-primary/5 p-4 sm:p-5 max-w-2xl">
+              <h3 className="text-sm sm:text-base font-semibold text-foreground mb-3">What I&apos;m looking for</h3>
+              <ul className="space-y-2 text-sm sm:text-[0.95rem] text-secondary-foreground/85">
+                <li>Graduate software engineering roles</li>
+                <li>Backend development internships</li>
+                <li>Teams building practical systems with real operational impact</li>
+              </ul>
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
               <Button variant="hero" size="lg" className="text-base px-11 h-12 sm:h-13 w-full sm:w-auto" asChild>
                 <a href="#projects">

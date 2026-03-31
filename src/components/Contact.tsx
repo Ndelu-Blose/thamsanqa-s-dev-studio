@@ -23,6 +23,9 @@ const Contact = () => {
           <p className="text-muted-foreground text-base sm:text-lg leading-relaxed mb-8 sm:mb-12">
             I'm currently open to internship and graduate opportunities. If you're looking for a developer who's hungry to learn and ready to contribute — let's connect.
           </p>
+          <p className="text-sm sm:text-base text-secondary-foreground/80 leading-relaxed mb-8 sm:mb-12">
+            I enjoy building systems that improve workflows, reduce friction, and solve practical business problems.
+          </p>
 
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-10 sm:mb-16">
             <Button variant="hero" size="lg" className="text-base px-10 h-12 sm:h-13 w-full sm:w-auto" asChild>
