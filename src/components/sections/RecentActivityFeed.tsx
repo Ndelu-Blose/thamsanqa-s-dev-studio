@@ -47,6 +47,7 @@ const RecentActivityFeed = () => {
   });
 
   const items = isError ? [] : (data ?? []);
+  const displayItems = items.slice(0, 5);
 
   return (
     <section id="activity" className="py-20 sm:py-24 lg:py-28 relative">
@@ -57,15 +58,15 @@ const RecentActivityFeed = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-10 sm:mb-14"
+          className="mb-8 sm:mb-10"
         >
           <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">Live</p>
-          <h2 className="text-3xl md:text-5xl font-bold">
-            Recent <span className="text-gradient">Activity</span>
+          <h2 className="text-3xl md:text-5xl font-bold text-foreground">
+            Recent <span className="text-primary">Activity</span>
           </h2>
-          <p className="mt-4 text-muted-foreground max-w-2xl text-sm sm:text-base leading-relaxed">
-            GitHub events sync automatically. Add LinkedIn or portfolio highlights in{" "}
-            <code className="text-xs font-mono bg-muted px-1.5 py-0.5 rounded">src/content/manual-updates.ts</code>.
+          <p className="mt-3 text-muted-foreground max-w-2xl text-sm sm:text-base leading-relaxed">
+            A concise journal from public GitHub activity. Mix in LinkedIn or portfolio highlights from your curated site content when you
+            want voice beyond what events alone can show.
           </p>
         </motion.div>
 
@@ -79,21 +80,21 @@ const RecentActivityFeed = () => {
           {isPending ? (
             <ul className="divide-y divide-border">
               {Array.from({ length: 5 }).map((_, i) => (
-                <li key={i} className="px-5 sm:px-7 py-4 sm:py-5">
+                <li key={i} className="px-4 sm:px-5 py-3 sm:py-3.5">
                   <div className="h-4 w-3/4 max-w-md bg-muted animate-pulse rounded" />
                   <div className="mt-2 h-3 w-24 bg-muted/70 animate-pulse rounded" />
                 </li>
               ))}
             </ul>
-          ) : items.length === 0 ? (
-            <div className="px-5 sm:px-7 py-10 text-center text-muted-foreground text-sm">
+          ) : displayItems.length === 0 ? (
+            <div className="px-4 sm:px-5 py-8 text-center text-muted-foreground text-sm">
               No activity to show yet. Set{" "}
               <span className="font-mono text-foreground/90">GITHUB_USERNAME</span> and{" "}
               <span className="font-mono text-foreground/90">GITHUB_TOKEN</span> on Vercel, or add manual updates.
             </div>
           ) : (
             <ul className="divide-y divide-border">
-              {items.map((item, i) => {
+              {displayItems.map((item, i) => {
                 const Icon = sourceIcon(item.source);
                 const when = safeFormatDistance(item.occurredAt);
                 return (
@@ -103,15 +104,15 @@ const RecentActivityFeed = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.35, delay: Math.min(i * 0.04, 0.3) }}
-                    className="px-5 sm:px-7 py-4 sm:py-5 hover:bg-secondary/30 transition-colors"
+                    className="px-4 sm:px-5 py-3 sm:py-3.5 hover:bg-secondary/30 transition-colors"
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-6">
-                      <div className="flex gap-3 min-w-0">
-                        <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border bg-background/80 text-primary">
-                          <Icon className="h-4 w-4" aria-hidden />
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 sm:gap-4">
+                      <div className="flex gap-2.5 min-w-0 flex-1">
+                        <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-border bg-background/80 text-primary">
+                          <Icon className="h-3.5 w-3.5" aria-hidden />
                         </div>
                         <div className="min-w-0">
-                          <p className="text-xs font-mono uppercase tracking-wide text-muted-foreground mb-1">
+                          <p className="text-[10px] font-mono uppercase tracking-wide text-muted-foreground mb-0.5">
                             {sourceLabel(item.source)}
                           </p>
                           {item.url ? (
@@ -128,7 +129,7 @@ const RecentActivityFeed = () => {
                             <p className="font-medium text-foreground break-words">{item.title}</p>
                           )}
                           {item.description ? (
-                            <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed break-words">
+                            <p className="text-xs sm:text-sm text-muted-foreground mt-1 leading-snug break-words">
                               {item.description}
                             </p>
                           ) : null}
@@ -136,7 +137,7 @@ const RecentActivityFeed = () => {
                       </div>
                       <time
                         dateTime={item.occurredAt}
-                        className="text-xs font-mono text-muted-foreground shrink-0 sm:text-right sm:pt-7"
+                        className="text-[10px] sm:text-xs font-mono text-muted-foreground shrink-0 sm:text-right pl-10 sm:pl-0"
                       >
                         {when}
                       </time>

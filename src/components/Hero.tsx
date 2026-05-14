@@ -6,6 +6,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SITE_GITHUB_URL, SITE_LINKEDIN_URL } from "@/content/site-links";
 
 const Hero = () => {
   return (
@@ -40,9 +41,8 @@ const Hero = () => {
               </span>
             </motion.div>
 
-            <h1 className="text-[1.95rem] sm:text-6xl md:text-7xl font-black leading-[1.03] tracking-tight mb-4 sm:mb-6">
-              Thamsanqa{" "}
-              <span className="text-gradient">Ndelu</span>
+            <h1 className="text-[1.95rem] sm:text-6xl md:text-7xl font-black leading-[1.03] tracking-tight mb-4 sm:mb-6 text-foreground">
+              Thamsanqa <span className="text-primary">Ndelu</span>
             </h1>
 
             <p className="text-base sm:text-2xl font-semibold text-foreground leading-snug">
@@ -71,13 +71,13 @@ const Hero = () => {
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
               <Button variant="hero" size="lg" className="text-base px-11 h-12 sm:h-13 w-full sm:w-auto" asChild>
-                <a href="#projects">
+                <a href="/#projects">
                   <ArrowDown className="w-4 h-4 mr-2" />
                   View Projects
                 </a>
               </Button>
               <Button variant="heroOutline" size="lg" className="text-base px-11 h-12 sm:h-13 w-full sm:w-auto" asChild>
-                <a href="#contact">
+                <a href="/#contact">
                   Contact Me
                 </a>
               </Button>
@@ -85,7 +85,7 @@ const Hero = () => {
 
             <div className="hidden lg:flex flex-wrap items-center gap-5 mt-8 text-sm">
               <a
-                href="https://github.com/Ndelu-Blose"
+                href={SITE_GITHUB_URL}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
@@ -94,7 +94,7 @@ const Hero = () => {
                 GitHub
               </a>
               <a
-                href="https://www.linkedin.com/in/thamsanqa-ndelu"
+                href={SITE_LINKEDIN_URL}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
@@ -107,7 +107,7 @@ const Hero = () => {
 
           <div className="flex lg:hidden items-center justify-between gap-3 text-sm mt-1">
             <a
-              href="https://github.com/Ndelu-Blose"
+              href={SITE_GITHUB_URL}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
@@ -116,7 +116,7 @@ const Hero = () => {
               GitHub
             </a>
             <a
-              href="https://www.linkedin.com/in/thamsanqa-ndelu"
+              href={SITE_LINKEDIN_URL}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"

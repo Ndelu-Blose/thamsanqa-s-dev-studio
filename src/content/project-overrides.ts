@@ -16,6 +16,7 @@ export type ProjectOverride = Partial<
     | "architecture"
     | "previewVideo"
     | "previewImage"
+    | "engineeringHighlights"
     | "color"
   >
 >;
@@ -49,5 +50,9 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     previewVideo: "/fleethub-preview.mp4",
     previewImage: "/fleethub-thumb.png",
     color: "180 60% 45%",
+    engineeringHighlights: [
+      "Separated booking flows from admin reporting to keep UX focused",
+      "PostgreSQL for relational fleet state with clear migration path",
+    ],
   },
 };

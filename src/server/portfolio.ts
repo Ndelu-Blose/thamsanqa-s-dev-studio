@@ -1,5 +1,6 @@
 import type { ProjectOverride } from "../content/project-overrides.js";
 import type { PinnedRepositoryNode } from "./github.js";
+import { isTrustedOgImageUrl } from "./repo-media.js";
 import type { PortfolioProject } from "../types/portfolio-project.js";
 
 function defaultColorFromRepoName(name: string): string {
@@ -43,8 +44,18 @@ export function buildPortfolioProjects(
 
     const tech = o.tech ?? techFromRepo(repo);
     const github = o.github ?? repo.url;
+    // GitHub "About" website → live demo when not overridden
     const liveDemo = o.liveDemo ?? (repo.homepageUrl && repo.homepageUrl.length > 0 ? repo.homepageUrl : undefined);
     const color = o.color ?? defaultColorFromRepoName(repo.name);
+
+    const ogImage =
+      repo.openGraphImageUrl && isTrustedOgImageUrl(repo.openGraphImageUrl) ? repo.openGraphImageUrl : undefined;
+    const previewImage = o.previewImage ?? ogImage;
+
+    const engineeringHighlights =
+      o.engineeringHighlights && o.engineeringHighlights.length > 0
+        ? o.engineeringHighlights.slice(0, 5)
+        : undefined;
 
     return {
       repoName: repo.name,
@@ -56,7 +67,8 @@ export function buildPortfolioProjects(
       caseStudy: o.caseStudy,
       architecture: o.architecture,
       previewVideo: o.previewVideo,
-      previewImage: o.previewImage,
+      previewImage,
+      engineeringHighlights,
       color,
     } satisfies PortfolioProject;
   });

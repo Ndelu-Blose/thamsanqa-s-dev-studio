@@ -59,8 +59,8 @@ const Experience = () => {
           className="mb-10 sm:mb-14"
         >
           <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">Experience</p>
-          <h2 className="text-3xl md:text-5xl font-bold">
-            Professional <span className="text-gradient">Experience</span>
+          <h2 className="text-3xl md:text-5xl font-bold text-foreground">
+            Professional <span className="text-primary">Experience</span>
           </h2>
           <p className="text-secondary-foreground/75 mt-4 max-w-2xl">
             Early-career roles and practical project work focused on building reliable systems, improving workflows, and solving real-world problems.

@@ -1,20 +1,23 @@
 import { useState, useEffect } from "react";
 import { Menu, X, FileDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useCommandPaletteShortcutLabel } from "@/lib/useCommandPaletteShortcutLabel";
 
 const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
-  { label: "Activity", href: "#activity" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/#home" },
+  { label: "About", href: "/engineering#about" },
+  { label: "Experience", href: "/#experience" },
+  { label: "Activity", href: "/engineering#activity" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Skills", href: "/engineering#skills" },
+  { label: "Engineering", href: "/engineering" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const paletteHint = useCommandPaletteShortcutLabel();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -39,8 +42,8 @@ const Navbar = () => {
         }`}
       >
         <div className="container mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
-        <a href="#home" className="text-xl font-bold text-gradient font-mono">
-          TN.
+        <a href="/#home" className="text-xl font-bold font-mono text-foreground">
+          TN<span className="text-primary">.</span>
         </a>
 
         {/* Desktop */}
@@ -54,6 +57,12 @@ const Navbar = () => {
               {link.label}
             </a>
           ))}
+          <span
+            className="hidden lg:inline text-[11px] text-muted-foreground tabular-nums border border-border/80 rounded-md px-1.5 py-0.5"
+            title="Open quick navigation"
+          >
+            {paletteHint}
+          </span>
           <Button variant="hero" size="sm" className="shadow-glow" asChild>
             <a href="/cv">
               <FileDown className="w-4 h-4 mr-1" />

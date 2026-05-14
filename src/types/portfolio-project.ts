@@ -10,5 +10,7 @@ export type PortfolioProject = {
   architecture?: string;
   previewVideo?: string;
   previewImage?: string;
+  /** Curated bullets — from overrides only (not GitHub) */
+  engineeringHighlights?: string[];
   color: string;
 };

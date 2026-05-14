@@ -1,10 +1,14 @@
+import { activityJournalOverrides } from "../content/activity-journal-overrides.js";
 import type { ActivityFeedItem } from "../types/activity-feed.js";
 
 type GithubRepoRef = { name?: string };
 
+type GithubCommitRef = { message?: string };
+
 type GithubPushPayload = {
   ref?: string;
   size?: number;
+  commits?: GithubCommitRef[];
 };
 
 type GithubCreatePayload = {
@@ -15,7 +19,7 @@ type GithubCreatePayload = {
 
 type GithubPullRequestPayload = {
   action?: string;
-  pull_request?: { title?: string; html_url?: string };
+  pull_request?: { title?: string; html_url?: string; merged?: boolean };
 };
 
 type GithubReleasePayload = {
@@ -40,6 +44,40 @@ function repoLabel(repo?: GithubRepoRef): string {
   return name ? name.split("/").pop() ?? name : "a repository";
 }
 
+/** GitHub special profile repo is typically `username/username` — low signal on a portfolio feed. */
+function isLikelyProfileReadmeRepo(repo?: GithubRepoRef): boolean {
+  const name = repo?.name;
+  if (!name || !name.includes("/")) return false;
+  const [owner, repoName] = name.split("/");
+  return Boolean(owner && repoName && owner === repoName);
+}
+
+function firstCommitSummary(payload: GithubPushPayload): string {
+  const raw = payload.commits?.[0]?.message;
+  if (typeof raw !== "string" || !raw.trim()) return "latest changes";
+  let line = raw.split("\n")[0].trim();
+  const coIdx = line.toLowerCase().indexOf("co-authored-by:");
+  if (coIdx !== -1) line = line.slice(0, coIdx).trim();
+  line = line.replace(/\s*\(#\d+\)\s*$/u, "").trim();
+  if (!line) return "latest changes";
+  if (line.length > 72) return `${line.slice(0, 69)}…`;
+  return line;
+}
+
+function applyJournalOverride(
+  line: Omit<ActivityFeedItem, "source">,
+  raw: unknown,
+): Omit<ActivityFeedItem, "source"> {
+  if (!isRecord(raw) || typeof raw.id !== "string") return line;
+  const rule = activityJournalOverrides.find((r) => r.matchEventId === raw.id);
+  if (!rule) return line;
+  return {
+    ...line,
+    title: rule.displayTitle ?? line.title,
+    description: rule.displayDescription ?? line.description,
+  };
+}
+
 export function formatGithubEvent(raw: unknown): Omit<ActivityFeedItem, "source"> | null {
   if (!isRecord(raw)) return null;
   const ev = raw as GithubEventRecord;
@@ -52,31 +90,28 @@ export function formatGithubEvent(raw: unknown): Omit<ActivityFeedItem, "source"
   const payload = isRecord(ev.payload) ? ev.payload : {};
 
   switch (type) {
+    case "WatchEvent":
+    case "ForkEvent":
+      return null;
     case "PushEvent": {
       const p = payload as GithubPushPayload;
-      const branch = typeof p.ref === "string" ? p.ref.replace(/^refs\/heads\//, "") : undefined;
-      const title = branch
-        ? `Pushed updates to ${repoName} (${branch})`
-        : `Pushed updates to ${repoName}`;
+      const summary = firstCommitSummary(p);
+      const title = `Shipped work on ${repoName}: ${summary}`;
       return { id: `github-${id}`, title, occurredAt: createdAt };
     }
     case "CreateEvent": {
       const p = payload as GithubCreatePayload;
       const refType = p.ref_type;
       if (refType === "repository") {
+        if (isLikelyProfileReadmeRepo(ev.repo)) return null;
         return {
           id: `github-${id}`,
-          title: `Created repository ${repoName}`,
+          title: `Started ${repoName} — new repository on GitHub`,
           occurredAt: createdAt,
         };
       }
       if (refType === "branch" || refType === "tag") {
-        const ref = typeof p.ref === "string" ? p.ref : refType;
-        return {
-          id: `github-${id}`,
-          title: `Created ${refType} ${ref} in ${repoName}`,
-          occurredAt: createdAt,
-        };
+        return null;
       }
       return {
         id: `github-${id}`,
@@ -87,12 +122,20 @@ export function formatGithubEvent(raw: unknown): Omit<ActivityFeedItem, "source"
     case "PullRequestEvent": {
       const p = payload as GithubPullRequestPayload;
       const action = typeof p.action === "string" ? p.action : "updated";
-      const prTitle = p.pull_request?.title ?? "a pull request";
-      const url = typeof p.pull_request?.html_url === "string" ? p.pull_request.html_url : undefined;
+      const pr = p.pull_request;
+      const prTitle = pr?.title?.trim() || "Pull request";
+      const url = typeof pr?.html_url === "string" ? pr.html_url : undefined;
+      const merged = pr?.merged === true;
+      let verb: string;
+      if (action === "closed" && merged) verb = "Merged";
+      else if (action === "closed" && !merged) verb = "Closed";
+      else if (action === "opened") verb = "Opened";
+      else if (action === "reopened") verb = "Reopened";
+      else verb = capitalize(action);
       return {
         id: `github-${id}`,
-        title: `${capitalize(action)} pull request in ${repoName}`,
-        description: prTitle,
+        title: prTitle,
+        description: `${verb} · ${repoName}`,
         url,
         occurredAt: createdAt,
       };
@@ -104,7 +147,8 @@ export function formatGithubEvent(raw: unknown): Omit<ActivityFeedItem, "source"
       const url = typeof p.release?.html_url === "string" ? p.release.html_url : undefined;
       return {
         id: `github-${id}`,
-        title: `${capitalize(action)} ${tag} of ${repoName}`,
+        title: `Release ${tag} for ${repoName}`,
+        description: `${capitalize(action)} on GitHub`,
         url,
         occurredAt: createdAt,
       };
@@ -113,43 +157,33 @@ export function formatGithubEvent(raw: unknown): Omit<ActivityFeedItem, "source"
       const action = typeof (payload as { action?: string }).action === "string" ? (payload as { action: string }).action : "updated";
       return {
         id: `github-${id}`,
-        title: `${capitalize(action)} an issue in ${repoName}`,
+        title: `${capitalize(action)} issue in ${repoName}`,
         occurredAt: createdAt,
       };
     }
-    case "WatchEvent": {
-      return {
-        id: `github-${id}`,
-        title: `Starred ${repoName}`,
-        occurredAt: createdAt,
-      };
-    }
-    case "ForkEvent": {
-      return {
-        id: `github-${id}`,
-        title: `Forked ${repoName}`,
-        occurredAt: createdAt,
-      };
-    }
+    case "DeleteEvent":
+      return null;
     case "PublicEvent": {
       return {
         id: `github-${id}`,
-        title: `Published ${repoName}`,
+        title: `Published ${repoName} on GitHub`,
         occurredAt: createdAt,
       };
     }
     default:
-      return {
-        id: `github-${id}`,
-        title: `${type.replace(/Event$/, "")} on ${repoName}`,
-        occurredAt: createdAt,
-      };
+      return null;
   }
 }
 
 function capitalize(s: string): string {
   if (!s) return s;
   return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+/** Repo segment from `Shipped work on {repo}: …` */
+function extractRepoFromShippedTitle(title: string): string | null {
+  const m = /^Shipped work on (.+?):/.exec(title);
+  return m ? m[1] : null;
 }
 
 /** Collapse consecutive push lines for the same repository */
@@ -172,29 +206,23 @@ function tryMergePush(
   curr: Omit<ActivityFeedItem, "source">,
 ): Omit<ActivityFeedItem, "source"> | null {
   if (!prev) return null;
-  const prevRepo = extractRepoFromPushTitle(prev.title);
-  const currRepo = extractRepoFromPushTitle(curr.title);
+  const prevRepo = extractRepoFromShippedTitle(prev.title);
+  const currRepo = extractRepoFromShippedTitle(curr.title);
   if (!prevRepo || !currRepo || prevRepo !== currRepo) return null;
-  if (!prev.title.startsWith("Pushed updates to ") || !curr.title.startsWith("Pushed updates to ")) return null;
+  if (!prev.title.startsWith("Shipped work on ") || !curr.title.startsWith("Shipped work on ")) return null;
   return {
     ...curr,
-    title: `Pushed updates to ${currRepo}`,
+    title: `Shipped work on ${currRepo}: latest activity`,
     description: "Multiple recent pushes",
   };
-}
-
-function extractRepoFromPushTitle(title: string): string | null {
-  const m = /^Pushed updates to (.+?) \(/.exec(title);
-  if (m) return m[1];
-  const m2 = /^Pushed updates to (.+)$/.exec(title);
-  return m2 ? m2[1] : null;
 }
 
 export function githubEventsToFeedItems(rawEvents: unknown[], limit: number): ActivityFeedItem[] {
   const lines: Omit<ActivityFeedItem, "source">[] = [];
   for (const raw of rawEvents) {
     const line = formatGithubEvent(raw);
-    if (line) lines.push(line);
+    if (!line) continue;
+    lines.push(applyJournalOverride(line, raw));
   }
   const deduped = dedupeGithubFeedItems(lines);
   return deduped.slice(0, limit).map((item) => ({ ...item, source: "github" as const }));

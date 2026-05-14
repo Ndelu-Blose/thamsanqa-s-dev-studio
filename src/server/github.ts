@@ -23,6 +23,7 @@ const PINNED_REPOS_QUERY = `
                 }
               }
             }
+            openGraphImageUrl
           }
         }
       }
@@ -35,6 +36,7 @@ export type PinnedRepositoryNode = {
   description: string | null;
   url: string;
   homepageUrl: string | null;
+  openGraphImageUrl: string | null;
   stargazerCount: number;
   forkCount: number;
   primaryLanguage: { name: string; color: string } | null;

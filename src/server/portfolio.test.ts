@@ -3,15 +3,17 @@ import { buildPortfolioProjects } from "@/server/portfolio";
 import type { PinnedRepositoryNode } from "@/server/github";
 import { projectOverrides } from "@/content/project-overrides";
 
-const baseRepo = (name: string): PinnedRepositoryNode => ({
+const baseRepo = (name: string, extras: Partial<PinnedRepositoryNode> = {}): PinnedRepositoryNode => ({
   name,
   description: "From GitHub",
   url: `https://github.com/u/${name}`,
   homepageUrl: null,
+  openGraphImageUrl: null,
   stargazerCount: 1,
   forkCount: 0,
   primaryLanguage: { name: "TypeScript", color: "#3178c6" },
   repositoryTopics: { nodes: [{ topic: { name: "react" } }] },
+  ...extras,
 });
 
 describe("buildPortfolioProjects", () => {
@@ -30,5 +32,18 @@ describe("buildPortfolioProjects", () => {
     expect(merged[0].repoName).toBe("new-repo");
     expect(merged[0].description).toBe("From GitHub");
     expect(merged[0].github).toContain("new-repo");
+  });
+
+  it("uses trusted openGraphImageUrl when no preview override", () => {
+    const og = "https://repository-images.githubusercontent.com/123/456";
+    const repos = [baseRepo("svc", { openGraphImageUrl: og })];
+    const merged = buildPortfolioProjects(repos, {});
+    expect(merged[0].previewImage).toBe(og);
+  });
+
+  it("passes engineering highlights from overrides", () => {
+    const repos = [baseRepo("Fleet_Rental_System")];
+    const merged = buildPortfolioProjects(repos, projectOverrides);
+    expect(merged[0].engineeringHighlights?.length).toBeGreaterThan(0);
   });
 });

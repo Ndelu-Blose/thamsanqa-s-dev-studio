@@ -5,12 +5,47 @@ import { ExternalLink, FileText, Github, GitBranch, type LucideIcon } from "luci
 import { Button } from "@/components/ui/button";
 import { fallbackPortfolioProjects } from "@/content/fallback-projects";
 import type { PortfolioProject } from "@/types/portfolio-project";
+import { isTrustedOgImageUrl } from "@/server/repo-media";
 
 type ProjectAction = {
   label: string;
   href: string;
   icon: LucideIcon;
 };
+
+function projectInitials(title: string): string {
+  const parts = title.trim().split(/\s+/).filter(Boolean);
+  if (parts.length >= 2) {
+    return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase();
+  }
+  const t = parts[0] ?? "?";
+  return t.length >= 2 ? t.slice(0, 2).toUpperCase() : `${t.charAt(0).toUpperCase()}·`;
+}
+
+function ProjectPreviewPlaceholder({ title, tech, hueCss }: { title: string; tech: string[]; hueCss: string }) {
+  const initials = projectInitials(title);
+  return (
+    <div
+      className="absolute inset-0 flex flex-col items-center justify-center border-b border-border/40"
+      style={{
+        background: `linear-gradient(135deg, hsl(${hueCss} / 0.22) 0%, hsl(var(--secondary) / 0.92) 45%, hsl(var(--background)) 100%)`,
+      }}
+    >
+      <span className="text-3xl sm:text-4xl font-bold font-mono tracking-tight text-foreground">{initials}</span>
+      <div className="mt-3 flex flex-wrap justify-center gap-1.5 px-5 max-w-[92%]">
+        {tech.slice(0, 4).map((t) => (
+          <span
+            key={t}
+            className="text-[10px] font-mono uppercase tracking-wide text-muted-foreground border border-border/70 rounded px-2 py-0.5 bg-background/50"
+          >
+            {t}
+          </span>
+        ))}
+      </div>
+      <span className="mt-3 text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground/75">Preview</span>
+    </div>
+  );
+}
 
 const buildMailTo = (projectTitle: string, topic: "details" | "architecture") => {
   const subject =
@@ -64,6 +99,7 @@ const getProjectActions = (project: PortfolioProject): ProjectAction[] => {
 const Projects = () => {
   const [canHoverPreview, setCanHoverPreview] = useState(false);
   const [activePreview, setActivePreview] = useState<string | null>(null);
+  const [brokenPreview, setBrokenPreview] = useState<Record<string, boolean>>({});
   const videoRefs = useRef<Record<string, HTMLVideoElement | null>>({});
   const hoverTimers = useRef<Record<string, ReturnType<typeof setTimeout> | null>>({});
 
@@ -137,12 +173,12 @@ const Projects = () => {
           className="mb-10 sm:mb-14"
         >
           <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">Portfolio</p>
-          <h2 className="text-3xl md:text-5xl font-bold">
-            Featured <span className="text-gradient">Projects</span>
+          <h2 className="text-3xl md:text-5xl font-bold text-foreground">
+            Featured <span className="text-primary">Projects</span>
           </h2>
           <p className="mt-4 text-muted-foreground max-w-2xl text-sm sm:text-base leading-relaxed">
-            Pinned GitHub repositories sync here; enrich each repo in{" "}
-            <code className="text-xs font-mono bg-muted px-1.5 py-0.5 rounded">src/content/project-overrides.ts</code>.
+            Pinned GitHub repositories sync automatically. Set each repo&apos;s <strong className="text-foreground/90">Website</strong> on
+            GitHub for live demo links, and add screenshots or video in your local content overrides when you want richer cards.
           </p>
         </motion.div>
 
@@ -166,6 +202,12 @@ const Projects = () => {
           <div className="grid sm:grid-cols-2 gap-5 sm:gap-7">
             {projects.map((project, i) => {
               const cardKey = project.repoName;
+              const rawImage = project.previewImage;
+              const trustedImage =
+                typeof rawImage === "string" && rawImage.trim().length > 0 && isTrustedOgImageUrl(rawImage)
+                  ? rawImage
+                  : undefined;
+              const showImage = Boolean(trustedImage) && !brokenPreview[cardKey];
               return (
                 <motion.div
                   key={cardKey}
@@ -173,7 +215,7 @@ const Projects = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className={`group relative rounded-2xl border border-border bg-card overflow-hidden shadow-card hover:shadow-card-hover hover:border-primary/40 transition-all duration-500 hover:-translate-y-1 ${
+                  className={`group relative section-surface-card overflow-hidden duration-500 ${
                     project.liveDemo ? "cursor-pointer" : ""
                   }`}
                   onMouseEnter={() => handleEnter(cardKey, project.previewVideo)}
@@ -190,16 +232,21 @@ const Projects = () => {
                   aria-label={project.liveDemo ? `Open ${project.title} live demo` : undefined}
                 >
                   <div className="h-44 sm:h-48 bg-secondary/50 relative overflow-hidden">
-                    <img
-                      src={project.previewImage ?? "/placeholder.svg"}
-                      alt={`${project.title} preview`}
-                      className={`absolute inset-0 h-full w-full object-cover transition-all duration-300 ease-in-out ${
-                        canHoverPreview && activePreview === cardKey
-                          ? "opacity-60 scale-105"
-                          : "opacity-100 scale-100"
-                      }`}
-                    />
-                    <div className="absolute inset-0 bg-grid-pattern opacity-20" />
+                    {showImage ? (
+                      <img
+                        src={trustedImage}
+                        alt={`${project.title} preview`}
+                        onError={() => setBrokenPreview((m) => ({ ...m, [cardKey]: true }))}
+                        className={`absolute inset-0 h-full w-full object-cover transition-all duration-300 ease-in-out ${
+                          canHoverPreview && activePreview === cardKey
+                            ? "opacity-60 scale-105"
+                            : "opacity-100 scale-100"
+                        }`}
+                      />
+                    ) : (
+                      <ProjectPreviewPlaceholder title={project.title} tech={project.tech} hueCss={project.color} />
+                    )}
+                    <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
                     {project.previewVideo && (
                       <video
                         ref={(el) => {
@@ -218,12 +265,12 @@ const Projects = () => {
                       />
                     )}
                     <div
-                      className={`absolute inset-0 bg-black/20 transition-opacity duration-300 ease-in-out ${
+                      className={`absolute inset-0 bg-black/20 transition-opacity duration-300 ease-in-out pointer-events-none ${
                         canHoverPreview && activePreview === cardKey ? "opacity-100" : "opacity-0"
                       }`}
                     />
                     <div
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out pointer-events-none"
                       style={{
                         background: `linear-gradient(135deg, hsl(${project.color} / 0.1), transparent)`,
                       }}
@@ -238,7 +285,20 @@ const Projects = () => {
                       <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0" />
                     </div>
 
-                    <p className="text-muted-foreground text-sm leading-relaxed mb-5">{project.description}</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed mb-4">{project.description}</p>
+
+                    {project.engineeringHighlights && project.engineeringHighlights.length > 0 ? (
+                      <div className="mb-4 rounded-lg border border-border/60 bg-muted/20 px-3 py-2.5">
+                        <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-1.5">
+                          Key engineering decisions
+                        </p>
+                        <ul className="space-y-1 text-xs text-muted-foreground leading-snug list-disc pl-3.5">
+                          {project.engineeringHighlights.map((line, idx) => (
+                            <li key={`${cardKey}-eng-${idx}`}>{line}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
 
                     <div className="flex flex-wrap gap-2 mb-6">
                       {project.tech.map((t) => (

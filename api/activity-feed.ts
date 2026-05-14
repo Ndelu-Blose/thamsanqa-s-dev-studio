@@ -7,8 +7,8 @@ import { getPublicUserEvents } from "../src/server/github.js";
 const CACHE_OK = "public, s-maxage=3600, stale-while-revalidate=7200";
 const CACHE_FALLBACK = "public, s-maxage=1800";
 
-const FEED_LIMIT = 16;
-const GITHUB_EVENT_CAP = 12;
+const FEED_LIMIT = 5;
+const GITHUB_EVENT_CAP = 24;
 
 export default async function handler(_req: VercelRequest, res: VercelResponse) {
   try {

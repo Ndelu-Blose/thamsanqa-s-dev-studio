@@ -19,8 +19,8 @@ const About = () => {
           className="mb-10 sm:mb-14"
         >
           <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">Background</p>
-          <h2 className="text-3xl md:text-5xl font-bold">
-            About <span className="text-gradient">Me</span>
+          <h2 className="text-3xl md:text-5xl font-bold text-foreground">
+            About <span className="text-primary">Me</span>
           </h2>
         </motion.div>
 

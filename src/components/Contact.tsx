@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SITE_GITHUB_URL, SITE_LINKEDIN_URL } from "@/content/site-links";
 
 const Contact = () => {
   return (
@@ -15,9 +16,8 @@ const Contact = () => {
           className="max-w-2xl mx-auto text-center"
         >
           <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">Contact</p>
-          <h2 className="text-3xl md:text-5xl font-bold mb-5 sm:mb-6">
-            Let's Build Something{" "}
-            <span className="text-gradient">Impactful</span>
+          <h2 className="text-3xl md:text-5xl font-bold mb-5 sm:mb-6 text-foreground">
+            Let&apos;s Build Something <span className="text-primary">Impactful</span>
           </h2>
 
           <p className="text-muted-foreground text-base sm:text-lg leading-relaxed mb-8 sm:mb-12">
@@ -35,7 +35,7 @@ const Contact = () => {
               </a>
             </Button>
             <Button variant="heroOutline" size="lg" className="text-base px-10 h-12 sm:h-13 w-full sm:w-auto" asChild>
-              <a href="https://www.linkedin.com/in/thamsanqa-ndelu" target="_blank" rel="noopener noreferrer">
+              <a href={SITE_LINKEDIN_URL} target="_blank" rel="noopener noreferrer">
                 <ArrowRight className="w-4 h-4 mr-2" />
                 Connect on LinkedIn
               </a>
@@ -44,8 +44,8 @@ const Contact = () => {
 
           <div className="flex justify-center gap-3 sm:gap-5">
             {[
-              { href: "https://github.com/Ndelu-Blose", icon: Github, label: "GitHub" },
-              { href: "https://www.linkedin.com/in/thamsanqa-ndelu", icon: Linkedin, label: "LinkedIn" },
+              { href: SITE_GITHUB_URL, icon: Github, label: "GitHub" },
+              { href: SITE_LINKEDIN_URL, icon: Linkedin, label: "LinkedIn" },
               { href: "mailto:thamsanqandelu0210@gmail.com", icon: Mail, label: "Email" },
             ].map((link) => (
               <a
