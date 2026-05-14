@@ -21,6 +21,17 @@ export const NAV_ITEMS: SiteNavItem[] = [
 ];
 
 /**
+ * Desktop header only — short row so the bar stays calm. All sections remain
+ * reachable from the mobile drawer, footer, and Command Palette (Ctrl/Cmd+K).
+ */
+export const DESKTOP_NAV_BAR_ITEMS: SiteNavItem[] = [
+  { label: "Home", href: "/#home" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Engineering", href: "/engineering" },
+  { label: "Contact", href: "/#contact" },
+];
+
+/**
  * Footer links only — no repeat of every header item.
  * About, activity, skills, and location live under Engineering.
  */
@@ -31,3 +42,20 @@ export const FOOTER_NAV_ITEMS: SiteNavItem[] = [
   { label: "Engineering", href: "/engineering" },
   { label: "Contact", href: "/#contact" },
 ];
+
+/** Mobile drawer: two groups so links are easier to scan than one long list. */
+export function getMobileNavSections(): { heading: string; items: SiteNavItem[] }[] {
+  const home: SiteNavItem[] = [];
+  const engineering: SiteNavItem[] = [];
+  for (const item of NAV_ITEMS) {
+    if (item.href.startsWith("/#")) {
+      home.push(item);
+    } else if (item.href.startsWith("/engineering")) {
+      engineering.push(item);
+    }
+  }
+  return [
+    { heading: "Portfolio home", items: home },
+    { heading: "Engineering hub", items: engineering },
+  ];
+}

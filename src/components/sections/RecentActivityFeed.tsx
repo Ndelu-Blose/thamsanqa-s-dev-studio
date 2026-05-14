@@ -50,7 +50,7 @@ const RecentActivityFeed = () => {
   const displayItems = items.slice(0, 5);
 
   return (
-    <section id="activity" className="py-20 sm:py-24 lg:py-28 relative">
+    <section id="activity" className="py-16 sm:py-24 lg:py-28 relative scroll-mt-nav sm:scroll-mt-nav-sm">
       <div className="absolute inset-0 bg-dot-pattern opacity-20 pointer-events-none" />
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <motion.div
@@ -61,7 +61,7 @@ const RecentActivityFeed = () => {
           className="mb-8 sm:mb-10"
         >
           <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">Live</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-foreground">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-foreground">
             Recent <span className="text-primary">Activity</span>
           </h2>
           <p className="mt-3 text-muted-foreground max-w-2xl text-sm sm:text-base leading-relaxed">

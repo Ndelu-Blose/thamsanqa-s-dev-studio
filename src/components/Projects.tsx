@@ -119,7 +119,7 @@ const Projects = () => {
   };
 
   return (
-    <section id="projects" className="py-20 sm:py-24 lg:py-28 relative">
+    <section id="projects" className="py-16 sm:py-24 lg:py-28 relative scroll-mt-nav sm:scroll-mt-nav-sm">
       <div className="absolute inset-0 bg-dot-pattern opacity-30 pointer-events-none" />
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <motion.div
@@ -130,7 +130,7 @@ const Projects = () => {
           className="mb-10 sm:mb-14"
         >
           <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">Portfolio</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-foreground">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-foreground">
             Featured <span className="text-primary">Projects</span>
           </h2>
           <p className="mt-4 text-muted-foreground max-w-2xl text-sm sm:text-base leading-relaxed">
@@ -148,9 +148,9 @@ const Projects = () => {
               >
                 <div className="h-44 sm:h-48 bg-muted" />
                 <div className="p-5 sm:p-6 space-y-3">
-                  <div className="h-6 w-2/3 bg-muted rounded" />
+                  <div className="h-6 w-8/12 max-w-[16rem] bg-muted rounded" />
                   <div className="h-4 w-full bg-muted/80 rounded" />
-                  <div className="h-4 w-5/6 bg-muted/80 rounded" />
+                  <div className="h-4 w-10/12 max-w-[20rem] bg-muted/80 rounded" />
                 </div>
               </div>
             ))}
@@ -274,7 +274,7 @@ const Projects = () => {
                             key={`${cardKey}-${action.label}`}
                             variant="heroOutline"
                             size="sm"
-                            className="w-full sm:w-auto justify-center"
+                            className="w-full sm:w-auto justify-center min-h-11 sm:min-h-9 py-2.5 sm:py-0"
                             asChild
                           >
                             <a

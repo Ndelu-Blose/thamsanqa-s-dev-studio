@@ -6,13 +6,13 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="min-h-0 lg:min-h-screen flex items-start lg:items-center relative overflow-hidden pt-20 sm:pt-24 pb-10 sm:pb-12 lg:pb-10"
+      className="min-h-0 lg:min-h-screen flex items-start lg:items-center relative overflow-hidden scroll-mt-nav sm:scroll-mt-nav-sm pt-[calc(4.35rem+env(safe-area-inset-top,0px))] sm:pt-[calc(5.25rem+env(safe-area-inset-top,0px))] pb-10 sm:pb-12 lg:pb-10 lg:pt-[calc(5.5rem+env(safe-area-inset-top,0px))]"
     >
       {/* Grid pattern background */}
       <div className="absolute inset-0 bg-grid-pattern opacity-25 pointer-events-none" />
 
-      {/* Subtle ambient accent */}
-      <div className="absolute top-28 left-1/3 w-[420px] h-[420px] bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
+      {/* Subtle ambient accent — heavy blur is costly on low-end phones */}
+      <div className="hidden sm:block absolute top-28 left-1/3 w-[420px] h-[420px] bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid gap-8 sm:gap-10 lg:gap-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
@@ -38,7 +38,7 @@ const Hero = () => {
               </span>
             </motion.div>
 
-            <h1 className="text-[1.95rem] sm:text-6xl md:text-7xl font-black leading-[1.03] tracking-tight mb-4 sm:mb-6 text-foreground">
+            <h1 className="text-[clamp(1.85rem,1.15rem+3.8vw,2.35rem)] sm:text-6xl md:text-7xl font-black leading-[1.03] tracking-tight mb-4 sm:mb-6 text-foreground">
               Thamsanqa <span className="text-primary">Ndelu</span>
             </h1>
 
@@ -69,13 +69,13 @@ const Hero = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
-              <Button variant="hero" size="lg" className="text-base px-11 h-12 sm:h-13 w-full sm:w-auto" asChild>
+              <Button variant="hero" size="lg" className="text-base px-8 min-h-12 h-auto py-3 sm:px-11 w-full sm:w-auto" asChild>
                 <a href="/#projects">
                   <ArrowDown className="w-4 h-4 mr-2" />
                   View Projects
                 </a>
               </Button>
-              <Button variant="heroOutline" size="lg" className="text-base px-11 h-12 sm:h-13 w-full sm:w-auto" asChild>
+              <Button variant="heroOutline" size="lg" className="text-base px-8 min-h-12 h-auto py-3 sm:px-11 w-full sm:w-auto" asChild>
                 <a href="/#contact">
                   Contact Me
                 </a>
@@ -87,7 +87,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
-            className="mx-auto w-full max-w-[260px] sm:max-w-[320px] lg:max-w-[460px]"
+            className="mx-auto w-full max-w-[240px] max-h-[min(48vh,300px)] sm:max-h-none sm:max-w-[320px] lg:max-w-[460px]"
           >
             <div className="aspect-[3/4] sm:aspect-[4/5] w-full rounded-xl sm:rounded-2xl border border-border/50 overflow-hidden bg-muted/20">
               <img

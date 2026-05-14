@@ -5,7 +5,7 @@ const CurrentlyBuildingTerminal = () => {
   return (
     <section
       id="building"
-      className="scroll-mt-20 sm:scroll-mt-24 border-t border-border/50 bg-background py-14 sm:py-16 lg:py-20"
+      className="scroll-mt-nav sm:scroll-mt-nav-sm border-t border-border/50 bg-background py-12 sm:py-16 lg:py-20"
     >
       <div className="container mx-auto px-4 sm:px-6 max-w-3xl">
         <motion.div

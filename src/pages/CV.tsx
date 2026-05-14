@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 const CV = () => {
   return (
-    <main className="min-h-screen bg-background py-6 sm:py-10 pb-24 sm:pb-10">
+    <main className="min-h-screen bg-background pt-[max(0.5rem,env(safe-area-inset-top,0px))] py-6 sm:py-10 pb-28 sm:pb-10">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="mb-5 sm:mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -75,13 +75,13 @@ const CV = () => {
 
       <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/10 bg-background/95 backdrop-blur-xl p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
         <div className="container mx-auto px-1 flex gap-2">
-          <Button variant="heroOutline" className="flex-1" asChild>
+          <Button variant="heroOutline" className="flex-1 min-h-11" asChild>
             <a href="/cv.pdf" target="_blank" rel="noreferrer">
               <ExternalLink className="w-4 h-4 mr-2" />
               Open
             </a>
           </Button>
-          <Button variant="hero" className="flex-1" asChild>
+          <Button variant="hero" className="flex-1 min-h-11" asChild>
             <a href="/cv.pdf" download>
               <Download className="w-4 h-4 mr-2" />
               Download

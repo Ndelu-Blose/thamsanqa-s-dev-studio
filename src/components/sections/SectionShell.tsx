@@ -30,7 +30,7 @@ export function SectionShell({
   return (
     <section
       id={id}
-      className={cn("py-20 sm:py-24 lg:py-28 relative scroll-mt-20 sm:scroll-mt-24", sectionClassName)}
+      className={cn("py-16 sm:py-24 lg:py-28 relative scroll-mt-nav sm:scroll-mt-nav-sm", sectionClassName)}
     >
       {showDotPattern ? (
         <div className="absolute inset-0 bg-dot-pattern opacity-[0.12] pointer-events-none" aria-hidden />
@@ -40,7 +40,7 @@ export function SectionShell({
           {eyebrow ? (
             <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">{eyebrow}</p>
           ) : null}
-          <h2 className="text-3xl md:text-5xl font-bold text-foreground">{title}</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-foreground">{title}</h2>
           {subtitle ? <p className="mt-3 text-muted-foreground max-w-2xl text-sm sm:text-base leading-relaxed">{subtitle}</p> : null}
         </div>
         {children}

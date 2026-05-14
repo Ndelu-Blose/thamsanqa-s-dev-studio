@@ -26,7 +26,7 @@ const Engineering = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main id="engineering" className="scroll-mt-20 pt-16 sm:pt-20">
+      <main id="engineering" className="scroll-mt-nav sm:scroll-mt-nav-sm pt-[calc(3.75rem+env(safe-area-inset-top,0px))] sm:pt-[calc(4.25rem+env(safe-area-inset-top,0px))]">
         <EngineeringPageIntro />
         <About />
         <RecentActivityFeed />

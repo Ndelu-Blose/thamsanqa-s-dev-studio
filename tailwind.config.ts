@@ -89,6 +89,11 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-up": "fade-up 0.6s ease-out forwards",
       },
+      /** Fixed navbar height + notch; use on `id` sections for in-page / hash links */
+      scrollMargin: {
+        nav: "calc(3.75rem + env(safe-area-inset-top, 0px))",
+        "nav-sm": "calc(4.25rem + env(safe-area-inset-top, 0px))",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

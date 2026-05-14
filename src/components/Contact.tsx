@@ -31,7 +31,7 @@ const socialTiles = [
 
 const Contact = () => {
   return (
-    <section id="contact" className="py-20 sm:py-24 lg:py-28 relative">
+    <section id="contact" className="py-16 sm:py-24 lg:py-28 relative scroll-mt-nav sm:scroll-mt-nav-sm">
       <div className="absolute inset-0 bg-dot-pattern opacity-20 pointer-events-none" />
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <motion.div
@@ -42,7 +42,7 @@ const Contact = () => {
           className="max-w-2xl mx-auto text-center"
         >
           <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">Contact</p>
-          <h2 className="text-3xl md:text-5xl font-bold mb-5 sm:mb-6 text-foreground">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-5 sm:mb-6 text-foreground">
             Let&apos;s Build Something <span className="text-primary">Impactful</span>
           </h2>
 
@@ -54,8 +54,8 @@ const Contact = () => {
             I enjoy work that improves workflows, cuts friction, and holds up in production.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-10 max-w-lg mx-auto">
-            <Button variant="hero" size="lg" className="text-base px-8 h-12 sm:h-13 w-full sm:flex-1 gap-2" asChild>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-3 mb-8 sm:mb-10 max-w-lg sm:max-w-3xl mx-auto w-full">
+            <Button variant="hero" size="lg" className="text-base px-6 min-h-12 h-auto py-3 w-full gap-2" asChild>
               <a href={MAIL}>
                 <Mail className="w-5 h-5 shrink-0 opacity-95" />
                 Email me
@@ -64,7 +64,7 @@ const Contact = () => {
             <Button
               variant="outline"
               size="lg"
-              className="text-base px-8 h-12 sm:h-13 w-full sm:flex-1 gap-2 border-[#0A66C2]/55 bg-[#0A66C2]/08 text-[#0A66C2] hover:bg-[#0A66C2]/14 hover:text-[#084d97] hover:border-[#0A66C2]"
+              className="text-base px-6 min-h-12 h-auto py-3 w-full gap-2 border-[#0A66C2]/55 bg-[#0A66C2]/08 text-[#0A66C2] hover:bg-[#0A66C2]/14 hover:text-[#084d97] hover:border-[#0A66C2]"
               asChild
             >
               <a href={SITE_LINKEDIN_URL} target="_blank" rel="noopener noreferrer">
@@ -72,17 +72,27 @@ const Contact = () => {
                 LinkedIn
               </a>
             </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="text-base px-6 min-h-12 h-auto py-3 w-full gap-2 border-white/20 bg-white/[0.06] text-foreground hover:bg-white/[0.1] hover:text-foreground hover:border-white/35"
+              asChild
+            >
+              <a href={SITE_GITHUB_URL} target="_blank" rel="noopener noreferrer">
+                <BrandGithubMark className="w-5 h-5 shrink-0 text-foreground" />
+                GitHub
+              </a>
+            </Button>
           </div>
 
-          <p className="text-xs sm:text-sm text-muted-foreground mb-4">Or open a profile directly</p>
-          <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
+          <div className="mx-auto grid w-full max-w-sm grid-cols-3 gap-3 sm:max-w-none sm:flex sm:flex-wrap sm:justify-center sm:gap-4">
             {socialTiles.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
                 target={link.href.startsWith("mailto") ? undefined : "_blank"}
                 rel={link.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-                className={`group flex min-h-[3.25rem] min-w-[3.25rem] items-center justify-center rounded-xl border p-3.5 sm:p-4 transition-all duration-300 ${link.tileClass}`}
+                className={`group flex aspect-square min-h-[3.25rem] w-full max-w-[4.5rem] sm:aspect-auto sm:max-w-none sm:min-w-[3.25rem] items-center justify-center justify-self-center rounded-xl border p-3.5 sm:p-4 transition-all duration-300 ${link.tileClass}`}
                 aria-label={link.label}
               >
                 {link.icon}

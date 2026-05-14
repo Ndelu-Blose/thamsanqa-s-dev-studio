@@ -16,7 +16,7 @@ const ROWS: StatusRow[] = [
 
 const SystemStatus = () => {
   return (
-    <section id="status" className="scroll-mt-20 sm:scroll-mt-24 py-12 sm:py-14 lg:py-16">
+    <section id="status" className="scroll-mt-nav sm:scroll-mt-nav-sm py-12 sm:py-14 lg:py-16">
       <div className="container mx-auto px-4 sm:px-6 max-w-2xl">
         <motion.div
           initial={{ opacity: 0, y: 14 }}

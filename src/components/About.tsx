@@ -9,7 +9,7 @@ const highlights = [
 
 const About = () => {
   return (
-    <section id="about" className="py-20 sm:py-24 lg:py-28">
+    <section id="about" className="py-16 sm:py-24 lg:py-28 scroll-mt-nav sm:scroll-mt-nav-sm">
       <div className="container mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -19,7 +19,7 @@ const About = () => {
           className="mb-10 sm:mb-14"
         >
           <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">Background</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-foreground">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-foreground">
             About <span className="text-primary">Me</span>
           </h2>
         </motion.div>
