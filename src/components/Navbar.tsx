@@ -1,15 +1,53 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import { Menu, X, FileDown, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { useCommandPaletteShortcutLabel } from "@/lib/useCommandPaletteShortcutLabel";
 import { SITE_GITHUB_URL } from "@/content/site-links";
 import { DESKTOP_NAV_BAR_ITEMS, getMobileNavSections } from "@/content/site-nav";
 
+function normalizeHash(hash: string): string {
+  if (!hash) return "";
+  return hash.startsWith("#") ? hash.slice(1) : hash;
+}
+
+function getActiveDesktopNavHref(pathname: string, hash: string): string | null {
+  const h = normalizeHash(hash).toLowerCase();
+  if (pathname === "/cv") return null;
+  if (pathname === "/engineering") return "/engineering";
+  if (pathname !== "/") return null;
+  if (h === "projects") return "/#projects";
+  if (h === "contact") return "/#contact";
+  return "/#home";
+}
+
+function isMobileNavLinkActive(href: string, pathname: string, hash: string): boolean {
+  const h = normalizeHash(hash).toLowerCase();
+  if (href.startsWith("/#")) {
+    const id = href.slice(2).toLowerCase();
+    if (pathname !== "/") return false;
+    if (id === "home") return h === "" || h === "home";
+    return h === id;
+  }
+  if (href === "/engineering") {
+    return pathname === "/engineering" && h === "";
+  }
+  if (href.startsWith("/engineering#")) {
+    const id = (href.split("#")[1] ?? "").toLowerCase();
+    return pathname === "/engineering" && h === id;
+  }
+  return false;
+}
+
 const Navbar = () => {
+  const { pathname, hash } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const paletteHint = useCommandPaletteShortcutLabel();
   const mobileSections = getMobileNavSections();
+  const activeDesktopHref = useMemo(() => getActiveDesktopNavHref(pathname, hash), [pathname, hash]);
+  const onCvPage = pathname === "/cv";
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -41,16 +79,25 @@ const Navbar = () => {
           {/* Desktop — compact primary nav; full list in menu + palette */}
           <div className="hidden md:flex items-center gap-3 lg:gap-4 shrink-0">
             <nav className="flex items-center gap-4 lg:gap-5" aria-label="Primary">
-              {DESKTOP_NAV_BAR_ITEMS.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  title={link.title ?? link.label}
-                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap py-2"
-                >
-                  {link.label}
-                </a>
-              ))}
+              {DESKTOP_NAV_BAR_ITEMS.map((link) => {
+                const active = activeDesktopHref === link.href;
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    title={link.title ?? link.label}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "text-sm font-medium whitespace-nowrap py-2 rounded-md px-1.5 -mx-0.5 transition-colors relative",
+                      active
+                        ? "text-primary font-semibold after:absolute after:left-1 after:right-1 after:bottom-1 after:h-0.5 after:rounded-full after:bg-primary"
+                        : "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    {link.label}
+                  </a>
+                );
+              })}
             </nav>
             <div className="flex items-center gap-2 pl-3 ml-1 border-l border-border/60">
               <span
@@ -68,7 +115,12 @@ const Navbar = () => {
               >
                 <Github className="h-[1.125rem] w-[1.125rem]" />
               </a>
-              <Button variant="hero" size="sm" className="shadow-glow shrink-0 h-9 px-3" asChild>
+              <Button
+                variant="hero"
+                size="sm"
+                className={cn("shadow-glow shrink-0 h-9 px-3", onCvPage && "ring-2 ring-primary/70 ring-offset-2 ring-offset-background")}
+                asChild
+              >
                 <a href="/cv">
                   <FileDown className="w-4 h-4 mr-1" />
                   CV
@@ -121,18 +173,27 @@ const Navbar = () => {
                     {section.heading}
                   </p>
                   <ul className="space-y-0.5">
-                    {section.items.map((link) => (
-                      <li key={link.href}>
-                        <a
-                          href={link.href}
-                          title={link.title}
-                          onClick={() => setIsOpen(false)}
-                          className="flex min-h-12 items-center rounded-xl px-3 text-[15px] font-medium text-foreground/90 active:bg-muted"
-                        >
-                          {link.label}
-                        </a>
-                      </li>
-                    ))}
+                    {section.items.map((link) => {
+                      const active = isMobileNavLinkActive(link.href, pathname, hash);
+                      return (
+                        <li key={link.href}>
+                          <a
+                            href={link.href}
+                            title={link.title}
+                            onClick={() => setIsOpen(false)}
+                            aria-current={active ? "page" : undefined}
+                            className={cn(
+                              "flex min-h-12 items-center rounded-xl px-3 text-[15px] font-medium active:bg-muted",
+                              active
+                                ? "bg-primary/12 text-primary border border-primary/25"
+                                : "text-foreground/90",
+                            )}
+                          >
+                            {link.label}
+                          </a>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               ))}
