@@ -2,32 +2,9 @@ import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SITE_GITHUB_URL, SITE_LINKEDIN_URL } from "@/content/site-links";
-import { BrandGithubMark, BrandLinkedInMark, BrandMailMark } from "@/components/icons/contact-brand-icons";
+import { BrandGithubMark, BrandLinkedInMark } from "@/components/icons/contact-brand-icons";
 
 const MAIL = "mailto:thamsanqandelu0210@gmail.com";
-
-const socialTiles = [
-  {
-    href: SITE_GITHUB_URL,
-    label: "GitHub profile",
-    tileClass:
-      "bg-[#f0f3f6] text-[#1a1e22] border-[#d8dee4] hover:bg-white hover:border-[#afb8c1] shadow-sm hover:shadow-md",
-    icon: <BrandGithubMark className="w-7 h-7 sm:w-8 sm:h-8" />,
-  },
-  {
-    href: SITE_LINKEDIN_URL,
-    label: "LinkedIn profile",
-    tileClass: "bg-[#0A66C2] text-white border-[#0A66C2] hover:bg-[#004182] hover:border-[#004182] shadow-sm hover:shadow-md",
-    icon: <BrandLinkedInMark className="w-7 h-7 sm:w-8 sm:h-8" />,
-  },
-  {
-    href: MAIL,
-    label: "Send email",
-    tileClass:
-      "bg-primary text-primary-foreground border-primary hover:bg-primary-hover hover:border-primary-hover shadow-sm hover:shadow-md",
-    icon: <BrandMailMark className="w-7 h-7 sm:w-8 sm:h-8" />,
-  },
-] as const;
 
 const Contact = () => {
   return (
@@ -83,21 +60,6 @@ const Contact = () => {
                 GitHub
               </a>
             </Button>
-          </div>
-
-          <div className="mx-auto grid w-full max-w-sm grid-cols-3 gap-3 sm:max-w-none sm:flex sm:flex-wrap sm:justify-center sm:gap-4">
-            {socialTiles.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target={link.href.startsWith("mailto") ? undefined : "_blank"}
-                rel={link.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-                className={`group flex aspect-square min-h-[3.25rem] w-full max-w-[4.5rem] sm:aspect-auto sm:max-w-none sm:min-w-[3.25rem] items-center justify-center justify-self-center rounded-xl border p-3.5 sm:p-4 transition-all duration-300 ${link.tileClass}`}
-                aria-label={link.label}
-              >
-                {link.icon}
-              </a>
-            ))}
           </div>
         </motion.div>
       </div>

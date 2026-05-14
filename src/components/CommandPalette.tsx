@@ -2,20 +2,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Activity,
-  Boxes,
   Briefcase,
   FileDown,
   FolderKanban,
-  Gauge,
   Github,
   Hammer,
   Home,
   Layers,
   Linkedin,
   Mail,
-  MapPin,
   Sparkles,
-  Timer,
   User,
 } from "lucide-react";
 import {
@@ -125,17 +121,9 @@ export function CommandPalette() {
             <FolderKanban className="mr-2 h-4 w-4" />
             Projects
           </CommandItem>
-          <CommandItem onSelect={() => goToSection("architecture")}>
-            <Boxes className="mr-2 h-4 w-4" />
-            Architecture
-          </CommandItem>
           <CommandItem onSelect={() => goToSection("building")}>
             <Hammer className="mr-2 h-4 w-4" />
             Currently building
-          </CommandItem>
-          <CommandItem onSelect={() => goToSection("status")}>
-            <Gauge className="mr-2 h-4 w-4" />
-            At a glance
           </CommandItem>
           <CommandItem onSelect={() => goToSection("contact")}>
             <Mail className="mr-2 h-4 w-4" />
@@ -159,14 +147,6 @@ export function CommandPalette() {
           <CommandItem onSelect={() => goEngineeringHash("skills")}>
             <Sparkles className="mr-2 h-4 w-4" />
             Skills
-          </CommandItem>
-          <CommandItem onSelect={() => goEngineeringHash("now")}>
-            <Timer className="mr-2 h-4 w-4" />
-            Now
-          </CommandItem>
-          <CommandItem onSelect={() => goEngineeringHash("location")}>
-            <MapPin className="mr-2 h-4 w-4" />
-            Location
           </CommandItem>
         </CommandGroup>
         <CommandSeparator />
