@@ -31,9 +31,8 @@ const Engineering = () => {
             Engineering
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
-            Same destination as the <span className="text-foreground/85 font-medium">Engineering</span> link in the nav —
-            background, activity, skills, and notes. Featured repos and the main contact block stay on the home
-            page.
+            Background, activity, skills, and engineering notes live here. Pinned repositories and the main contact block stay
+            on the home page.
           </p>
         </header>
         <EngineeringPageIntro />

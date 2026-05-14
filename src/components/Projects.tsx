@@ -63,7 +63,7 @@ const getProjectActions = (project: PortfolioProject): ProjectAction[] => {
   const baseActions: ProjectAction[] = [];
 
   if (project.liveDemo) {
-    baseActions.push({ label: "Live Demo", href: project.liveDemo, icon: ExternalLink });
+    baseActions.push({ label: "View project", href: project.liveDemo, icon: ExternalLink });
   }
   if (project.caseStudy) {
     baseActions.push({ label: "Case Study", href: project.caseStudy, icon: FileText });
@@ -112,11 +112,6 @@ const Projects = () => {
 
   const projects: PortfolioProject[] =
     isError || !data || data.length === 0 ? fallbackPortfolioProjects : data;
-
-  const openDemo = (url?: string) => {
-    if (!url) return;
-    window.open(url, "_blank", "noopener,noreferrer");
-  };
 
   return (
     <section id="projects" className="py-16 sm:py-24 lg:py-28 relative scroll-mt-nav sm:scroll-mt-nav-sm">
@@ -168,25 +163,14 @@ const Projects = () => {
               const hasVideo = Boolean(project.previewVideo);
               const videoPoster = showImage && trustedImage ? trustedImage : undefined;
               return (
-                <motion.div
+                <motion.article
                   key={cardKey}
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className={`group relative section-surface-card overflow-hidden duration-500 ${
-                    project.liveDemo ? "cursor-pointer" : ""
-                  }`}
-                  onClick={() => openDemo(project.liveDemo)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter" || event.key === " ") {
-                      event.preventDefault();
-                      openDemo(project.liveDemo);
-                    }
-                  }}
-                  role={project.liveDemo ? "button" : undefined}
-                  tabIndex={project.liveDemo ? 0 : -1}
-                  aria-label={project.liveDemo ? `Open ${project.title} live demo` : undefined}
+                  aria-labelledby={`proj-title-${cardKey}`}
+                  className="group relative section-surface-card overflow-hidden duration-500"
                 >
                   <div className="h-44 sm:h-48 bg-secondary/50 relative overflow-hidden">
                     {hasVideo ? (
@@ -228,11 +212,13 @@ const Projects = () => {
                   </div>
 
                   <div className="p-5 sm:p-6">
-                    <div className="flex items-start justify-between mb-3">
-                      <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
+                    <div className="flex items-start justify-between gap-3 mb-3">
+                      <h3
+                        id={`proj-title-${cardKey}`}
+                        className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300"
+                      >
                         {project.title}
                       </h3>
-                      <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0" />
                     </div>
 
                     <p className="text-muted-foreground text-sm leading-relaxed mb-4">{project.description}</p>
@@ -261,11 +247,7 @@ const Projects = () => {
                       ))}
                     </div>
 
-                    <div
-                      className="flex flex-col sm:flex-row gap-2.5 sm:gap-3"
-                      onClick={(event) => event.stopPropagation()}
-                      onKeyDown={(event) => event.stopPropagation()}
-                    >
+                    <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
                       {getProjectActions(project).map((action) => {
                         const Icon = action.icon;
                         const isMailTo = action.href.startsWith("mailto:");
@@ -274,7 +256,7 @@ const Projects = () => {
                             key={`${cardKey}-${action.label}`}
                             variant="heroOutline"
                             size="sm"
-                            className="w-full sm:w-auto justify-center min-h-11 sm:min-h-9 py-2.5 sm:py-0"
+                            className="w-full sm:w-auto justify-center min-h-11 sm:min-h-9 py-2.5 sm:py-0 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                             asChild
                           >
                             <a
@@ -290,7 +272,7 @@ const Projects = () => {
                       })}
                     </div>
                   </div>
-                </motion.div>
+                </motion.article>
               );
             })}
           </div>

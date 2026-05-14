@@ -6,29 +6,38 @@ import { cn } from "@/lib/utils";
 import { useCommandPaletteShortcutLabel } from "@/lib/useCommandPaletteShortcutLabel";
 import { SITE_GITHUB_URL } from "@/content/site-links";
 import { DESKTOP_NAV_BAR_ITEMS, getMobileNavSections } from "@/content/site-nav";
+import { useHomeScrollSpySection } from "@/hooks/useHomeScrollSpySection";
 
 function normalizeHash(hash: string): string {
   if (!hash) return "";
   return hash.startsWith("#") ? hash.slice(1) : hash;
 }
 
-function getActiveDesktopNavHref(pathname: string, hash: string): string | null {
+function getActiveDesktopNavHref(pathname: string, hash: string, homeSpySectionId: string): string | null {
   const h = normalizeHash(hash).toLowerCase();
   if (pathname === "/cv") return null;
   if (pathname === "/engineering") return "/engineering";
   if (pathname !== "/") return null;
   if (h === "projects") return "/#projects";
   if (h === "contact") return "/#contact";
+  if (h === "home") return "/#home";
+  if (h) return "/#home";
+  if (homeSpySectionId === "projects") return "/#projects";
+  if (homeSpySectionId === "contact") return "/#contact";
   return "/#home";
 }
 
-function isMobileNavLinkActive(href: string, pathname: string, hash: string): boolean {
+function isMobileNavLinkActive(href: string, pathname: string, hash: string, homeSpySectionId: string): boolean {
   const h = normalizeHash(hash).toLowerCase();
   if (href.startsWith("/#")) {
     const id = href.slice(2).toLowerCase();
     if (pathname !== "/") return false;
-    if (id === "home") return h === "" || h === "home";
-    return h === id;
+    if (h) {
+      if (id === "home") return h === "home" || h === "";
+      return h === id;
+    }
+    if (id === "home") return homeSpySectionId === "home";
+    return homeSpySectionId === id;
   }
   if (href === "/engineering") {
     return pathname === "/engineering" && h === "";
@@ -46,7 +55,11 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const paletteHint = useCommandPaletteShortcutLabel();
   const mobileSections = getMobileNavSections();
-  const activeDesktopHref = useMemo(() => getActiveDesktopNavHref(pathname, hash), [pathname, hash]);
+  const homeSpySectionId = useHomeScrollSpySection(pathname, hash);
+  const activeDesktopHref = useMemo(
+    () => getActiveDesktopNavHref(pathname, hash, homeSpySectionId),
+    [pathname, hash, homeSpySectionId],
+  );
   const onCvPage = pathname === "/cv";
 
   useEffect(() => {
@@ -88,7 +101,7 @@ const Navbar = () => {
                     title={link.title ?? link.label}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "text-sm font-medium whitespace-nowrap py-2 rounded-md px-1.5 -mx-0.5 transition-colors relative",
+                      "text-sm font-medium whitespace-nowrap py-2 rounded-md px-1.5 -mx-0.5 transition-colors relative outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                       active
                         ? "text-primary font-semibold after:absolute after:left-1 after:right-1 after:bottom-1 after:h-0.5 after:rounded-full after:bg-primary"
                         : "text-muted-foreground hover:text-foreground",
@@ -174,7 +187,7 @@ const Navbar = () => {
                   </p>
                   <ul className="space-y-0.5">
                     {section.items.map((link) => {
-                      const active = isMobileNavLinkActive(link.href, pathname, hash);
+                      const active = isMobileNavLinkActive(link.href, pathname, hash, homeSpySectionId);
                       return (
                         <li key={link.href}>
                           <a
@@ -183,7 +196,7 @@ const Navbar = () => {
                             onClick={() => setIsOpen(false)}
                             aria-current={active ? "page" : undefined}
                             className={cn(
-                              "flex min-h-12 items-center rounded-xl px-3 text-[15px] font-medium active:bg-muted",
+                              "flex min-h-12 items-center rounded-xl px-3 text-[15px] font-medium active:bg-muted outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                               active
                                 ? "bg-primary/12 text-primary border border-primary/25"
                                 : "text-foreground/90",
