@@ -8,7 +8,15 @@ export default tseslint.config(
   { ignores: ["dist"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ["**/*.{ts,tsx}"],
+    files: ["api/**/*.ts"],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: { ...globals.node },
+    },
+  },
+  {
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    files: ["src/**/*.{ts,tsx}", "vite.config.ts"],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,

@@ -5,7 +5,7 @@
       "destination": "/cv.pdf"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
   ]
