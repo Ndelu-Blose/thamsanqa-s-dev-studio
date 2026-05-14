@@ -6,13 +6,13 @@ const LocationCard = () => {
   return (
     <SectionShell
       id="location"
-      eyebrow="Where"
+      eyebrow="Location"
       title={
         <>
-          Based in <span className="text-primary">Durban</span>
+          Time zone &amp; <span className="text-primary">collaboration</span>
         </>
       }
-      subtitle="South Africa · SAST (UTC+2). Remote-first collaboration across time zones when it makes sense."
+      subtitle="SAST (UTC+2). Remote-friendly when overlap hours make sense."
     >
       <motion.div
         initial={{ opacity: 0, y: 18 }}
@@ -29,7 +29,7 @@ const LocationCard = () => {
               <MapPin className="h-5 w-5 text-primary" aria-hidden />
             </div>
             <p className="text-sm font-medium text-foreground px-4 text-center">Durban, KwaZulu-Natal</p>
-            <p className="text-xs text-muted-foreground">No map SDK — just a calm locator motif.</p>
+            <p className="text-xs text-muted-foreground">South Africa · SAST (UTC+2)</p>
           </div>
         </div>
         <div className="border-t border-border px-5 py-4 sm:px-6 bg-card/80">

@@ -1,15 +1,8 @@
 import { SITE_GITHUB_URL, SITE_LINKEDIN_URL } from "@/content/site-links";
 import { useCommandPaletteShortcutLabel } from "@/lib/useCommandPaletteShortcutLabel";
+import { FOOTER_NAV_ITEMS } from "@/content/site-nav";
 
-const navLinks = [
-  { label: "Home", href: "/#home" },
-  { label: "About", href: "/engineering#about" },
-  { label: "Projects", href: "/#projects" },
-  { label: "Skills", href: "/engineering#skills" },
-  { label: "Contact", href: "/#contact" },
-];
-
-const cvLastUpdated = "Mar 2026";
+const cvLastUpdated = "May 2026";
 
 const Footer = () => {
   const paletteHint = useCommandPaletteShortcutLabel();
@@ -31,7 +24,7 @@ const Footer = () => {
           </div>
 
           <nav className="flex gap-6">
-            {navLinks.map((link) => (
+            {FOOTER_NAV_ITEMS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}

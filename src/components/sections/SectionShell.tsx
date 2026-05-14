@@ -3,7 +3,8 @@ import { cn } from "@/lib/utils";
 
 type SectionShellProps = {
   id?: string;
-  eyebrow: string;
+  /** Small uppercase label above the title; omit for a cleaner header. */
+  eyebrow?: string;
   title: ReactNode;
   subtitle?: string;
   children: ReactNode;
@@ -36,7 +37,9 @@ export function SectionShell({
       ) : null}
       <div className={cn("container mx-auto px-4 sm:px-6 relative z-10", className)}>
         <div className="mb-10 sm:mb-14">
-          <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">{eyebrow}</p>
+          {eyebrow ? (
+            <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">{eyebrow}</p>
+          ) : null}
           <h2 className="text-3xl md:text-5xl font-bold text-foreground">{title}</h2>
           {subtitle ? <p className="mt-3 text-muted-foreground max-w-2xl text-sm sm:text-base leading-relaxed">{subtitle}</p> : null}
         </div>

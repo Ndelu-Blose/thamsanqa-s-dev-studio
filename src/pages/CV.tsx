@@ -10,7 +10,8 @@ const CV = () => {
             <p className="text-primary font-mono text-sm tracking-widest uppercase mb-2">Curriculum Vitae</p>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">Thamsanqa Ndelu Resume</h1>
             <p className="text-muted-foreground text-sm sm:text-base mt-2">
-              Preview the latest CV below or download a copy directly.
+              Preview below or download. This PDF includes the <strong className="text-foreground/90 font-medium">completion letter</strong>{" "}
+              together with the resume.
             </p>
           </div>
 

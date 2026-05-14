@@ -8,7 +8,8 @@ import EngineeringNotes from "@/components/sections/EngineeringNotes";
 import Skills from "@/components/Skills";
 import NowSection from "@/components/sections/NowSection";
 import LocationCard from "@/components/sections/LocationCard";
-import Contact from "@/components/Contact";
+import EngineeringPageIntro from "@/components/sections/EngineeringPageIntro";
+import EngineeringEndCta from "@/components/sections/EngineeringEndCta";
 import Footer from "@/components/Footer";
 
 const Engineering = () => {
@@ -26,6 +27,7 @@ const Engineering = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <main id="engineering" className="scroll-mt-20 pt-16 sm:pt-20">
+        <EngineeringPageIntro />
         <About />
         <RecentActivityFeed />
         <ProjectMetrics />
@@ -33,7 +35,7 @@ const Engineering = () => {
         <Skills />
         <NowSection />
         <LocationCard />
-        <Contact />
+        <EngineeringEndCta />
       </main>
       <Footer />
     </div>

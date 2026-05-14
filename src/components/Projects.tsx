@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ExternalLink, FileText, Github, GitBranch, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -97,11 +97,7 @@ const getProjectActions = (project: PortfolioProject): ProjectAction[] => {
 };
 
 const Projects = () => {
-  const [canHoverPreview, setCanHoverPreview] = useState(false);
-  const [activePreview, setActivePreview] = useState<string | null>(null);
   const [brokenPreview, setBrokenPreview] = useState<Record<string, boolean>>({});
-  const videoRefs = useRef<Record<string, HTMLVideoElement | null>>({});
-  const hoverTimers = useRef<Record<string, ReturnType<typeof setTimeout> | null>>({});
 
   const { data, isPending, isError } = useQuery({
     queryKey: ["portfolio-projects"],
@@ -116,45 +112,6 @@ const Projects = () => {
 
   const projects: PortfolioProject[] =
     isError || !data || data.length === 0 ? fallbackPortfolioProjects : data;
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const update = () => setCanHoverPreview(mediaQuery.matches);
-    update();
-    mediaQuery.addEventListener("change", update);
-    return () => mediaQuery.removeEventListener("change", update);
-  }, []);
-
-  const handleEnter = (key: string, previewVideo?: string) => {
-    if (!canHoverPreview || !previewVideo) return;
-    if (hoverTimers.current[key]) {
-      clearTimeout(hoverTimers.current[key] as ReturnType<typeof setTimeout>);
-    }
-    hoverTimers.current[key] = setTimeout(async () => {
-      const video = videoRefs.current[key];
-      if (!video) return;
-      video.currentTime = 0;
-      try {
-        await video.play();
-        setActivePreview(key);
-      } catch {
-        setActivePreview((current) => (current === key ? null : current));
-      }
-    }, 120);
-  };
-
-  const handleLeave = (key: string, previewVideo?: string) => {
-    if (!canHoverPreview || !previewVideo) return;
-    if (hoverTimers.current[key]) {
-      clearTimeout(hoverTimers.current[key] as ReturnType<typeof setTimeout>);
-      hoverTimers.current[key] = null;
-    }
-    setActivePreview((current) => (current === key ? null : current));
-    const video = videoRefs.current[key];
-    if (!video) return;
-    video.pause();
-    video.currentTime = 0;
-  };
 
   const openDemo = (url?: string) => {
     if (!url) return;
@@ -208,6 +165,8 @@ const Projects = () => {
                   ? rawImage
                   : undefined;
               const showImage = Boolean(trustedImage) && !brokenPreview[cardKey];
+              const hasVideo = Boolean(project.previewVideo);
+              const videoPoster = showImage && trustedImage ? trustedImage : undefined;
               return (
                 <motion.div
                   key={cardKey}
@@ -218,8 +177,6 @@ const Projects = () => {
                   className={`group relative section-surface-card overflow-hidden duration-500 ${
                     project.liveDemo ? "cursor-pointer" : ""
                   }`}
-                  onMouseEnter={() => handleEnter(cardKey, project.previewVideo)}
-                  onMouseLeave={() => handleLeave(cardKey, project.previewVideo)}
                   onClick={() => openDemo(project.liveDemo)}
                   onKeyDown={(event) => {
                     if (event.key === "Enter" || event.key === " ") {
@@ -232,43 +189,36 @@ const Projects = () => {
                   aria-label={project.liveDemo ? `Open ${project.title} live demo` : undefined}
                 >
                   <div className="h-44 sm:h-48 bg-secondary/50 relative overflow-hidden">
-                    {showImage ? (
+                    {hasVideo ? (
+                      <>
+                        {(!showImage || !trustedImage) && (
+                          <div className="absolute inset-0 z-0">
+                            <ProjectPreviewPlaceholder title={project.title} tech={project.tech} hueCss={project.color} />
+                          </div>
+                        )}
+                        <video
+                          src={project.previewVideo}
+                          poster={videoPoster}
+                          muted
+                          loop
+                          playsInline
+                          autoPlay
+                          preload="auto"
+                          className="absolute inset-0 z-[1] h-full w-full object-cover pointer-events-none"
+                          aria-label={`${project.title} preview video`}
+                        />
+                      </>
+                    ) : showImage ? (
                       <img
                         src={trustedImage}
                         alt={`${project.title} preview`}
                         onError={() => setBrokenPreview((m) => ({ ...m, [cardKey]: true }))}
-                        className={`absolute inset-0 h-full w-full object-cover transition-all duration-300 ease-in-out ${
-                          canHoverPreview && activePreview === cardKey
-                            ? "opacity-60 scale-105"
-                            : "opacity-100 scale-100"
-                        }`}
+                        className="absolute inset-0 h-full w-full object-cover"
                       />
                     ) : (
                       <ProjectPreviewPlaceholder title={project.title} tech={project.tech} hueCss={project.color} />
                     )}
                     <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
-                    {project.previewVideo && (
-                      <video
-                        ref={(el) => {
-                          videoRefs.current[cardKey] = el;
-                        }}
-                        src={project.previewVideo}
-                        muted
-                        loop
-                        playsInline
-                        preload="auto"
-                        className={`absolute inset-0 h-full w-full object-cover transition-all duration-300 ease-in-out ${
-                          canHoverPreview && activePreview === cardKey
-                            ? "opacity-100 scale-105"
-                            : "opacity-0 scale-100"
-                        }`}
-                      />
-                    )}
-                    <div
-                      className={`absolute inset-0 bg-black/20 transition-opacity duration-300 ease-in-out pointer-events-none ${
-                        canHoverPreview && activePreview === cardKey ? "opacity-100" : "opacity-0"
-                      }`}
-                    />
                     <div
                       className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out pointer-events-none"
                       style={{

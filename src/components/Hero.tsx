@@ -1,16 +1,13 @@
 import { motion } from "framer-motion";
-import {
-  ArrowDown,
-  Github,
-  Linkedin,
-  Sparkles,
-} from "lucide-react";
+import { ArrowDown, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SITE_GITHUB_URL, SITE_LINKEDIN_URL } from "@/content/site-links";
 
 const Hero = () => {
   return (
-    <section id="home" className="min-h-screen flex items-center relative overflow-hidden pt-20 sm:pt-24 pb-8 sm:pb-10">
+    <section
+      id="home"
+      className="min-h-0 lg:min-h-screen flex items-start lg:items-center relative overflow-hidden pt-20 sm:pt-24 pb-10 sm:pb-12 lg:pb-10"
+    >
       {/* Grid pattern background */}
       <div className="absolute inset-0 bg-grid-pattern opacity-25 pointer-events-none" />
 
@@ -23,7 +20,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-3xl rounded-2xl border border-white/10 bg-background/55 backdrop-blur-sm p-4 sm:p-0 sm:border-0 sm:bg-transparent sm:backdrop-blur-0"
+            className="max-w-3xl lg:max-w-none"
           >
             {/* Status badge */}
             <motion.div
@@ -57,12 +54,14 @@ const Hero = () => {
             </p>
 
             <p className="text-sm text-secondary-foreground/80 mt-4">
-              Based in Durban, South Africa • Open to Opportunities
+              Durban, South Africa · Remote-friendly
             </p>
 
-            <div className="mt-6 rounded-xl border border-primary/20 bg-primary/5 p-4 sm:p-5 max-w-2xl">
-              <h3 className="text-sm sm:text-base font-semibold text-foreground mb-3">What I&apos;m looking for</h3>
-              <ul className="space-y-2 text-sm sm:text-[0.95rem] text-secondary-foreground/85">
+            <div className="mt-5 sm:mt-6 max-w-2xl border-l-2 border-primary/30 pl-4 sm:pl-5 py-0.5">
+              <p className="text-[11px] sm:text-xs font-medium uppercase tracking-wide text-muted-foreground mb-2">
+                What I&apos;m looking for
+              </p>
+              <ul className="space-y-1.5 text-sm sm:text-[0.95rem] text-secondary-foreground/90 leading-snug">
                 <li>Graduate software engineering roles</li>
                 <li>Backend development internships</li>
                 <li>Teams building practical systems with real operational impact</li>
@@ -82,57 +81,15 @@ const Hero = () => {
                 </a>
               </Button>
             </div>
-
-            <div className="hidden lg:flex flex-wrap items-center gap-5 mt-8 text-sm">
-              <a
-                href={SITE_GITHUB_URL}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Github className="w-4 h-4" />
-                GitHub
-              </a>
-              <a
-                href={SITE_LINKEDIN_URL}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Linkedin className="w-4 h-4" />
-                LinkedIn
-              </a>
-            </div>
           </motion.div>
-
-          <div className="flex lg:hidden items-center justify-between gap-3 text-sm mt-1">
-            <a
-              href={SITE_GITHUB_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-            >
-              <Github className="w-4 h-4" />
-              GitHub
-            </a>
-            <a
-              href={SITE_LINKEDIN_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-            >
-              <Linkedin className="w-4 h-4" />
-              LinkedIn
-            </a>
-          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
-            className="mx-auto w-full max-w-[280px] sm:max-w-[360px] lg:max-w-[460px]"
+            className="mx-auto w-full max-w-[260px] sm:max-w-[320px] lg:max-w-[460px]"
           >
-            <div className="aspect-[4/5] w-full rounded-2xl border border-white/10 overflow-hidden bg-white/5">
+            <div className="aspect-[3/4] sm:aspect-[4/5] w-full rounded-xl sm:rounded-2xl border border-border/50 overflow-hidden bg-muted/20">
               <img
                 src="/profile.png"
                 alt="Portrait of Thamsanqa Ndelu"

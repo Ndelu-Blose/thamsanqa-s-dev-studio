@@ -2,17 +2,7 @@ import { useState, useEffect } from "react";
 import { Menu, X, FileDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCommandPaletteShortcutLabel } from "@/lib/useCommandPaletteShortcutLabel";
-
-const navLinks = [
-  { label: "Home", href: "/#home" },
-  { label: "About", href: "/engineering#about" },
-  { label: "Experience", href: "/#experience" },
-  { label: "Activity", href: "/engineering#activity" },
-  { label: "Projects", href: "/#projects" },
-  { label: "Skills", href: "/engineering#skills" },
-  { label: "Engineering", href: "/engineering" },
-  { label: "Contact", href: "/#contact" },
-];
+import { NAV_ITEMS } from "@/content/site-nav";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,12 +37,13 @@ const Navbar = () => {
         </a>
 
         {/* Desktop */}
-        <div className="hidden md:flex items-center gap-7">
-          {navLinks.map((link) => (
+        <div className="hidden md:flex items-center gap-4 lg:gap-5 xl:gap-6 flex-wrap justify-end max-w-[calc(100vw-10rem)]">
+          {NAV_ITEMS.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
+              title={link.title}
+              className="text-[13px] lg:text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200 relative after:content-[''] after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 hover:after:w-full whitespace-nowrap"
             >
               {link.label}
             </a>
@@ -99,10 +90,11 @@ const Navbar = () => {
           isOpen ? "translate-y-0" : "-translate-y-[130%] pointer-events-none"
         }`}
       >
-          {navLinks.map((link) => (
+          {NAV_ITEMS.map((link) => (
             <a
               key={link.href}
               href={link.href}
+              title={link.title}
               onClick={() => setIsOpen(false)}
               className="block rounded-lg px-3 py-2.5 text-[15px] text-muted-foreground hover:text-primary hover:bg-card transition-colors"
             >

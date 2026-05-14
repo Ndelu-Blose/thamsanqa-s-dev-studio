@@ -3,15 +3,20 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   Activity,
   Boxes,
+  Briefcase,
   FileDown,
   FolderKanban,
+  Gauge,
   Github,
+  Hammer,
   Home,
   Layers,
   Linkedin,
   Mail,
+  MapPin,
   Sparkles,
   Timer,
+  User,
 } from "lucide-react";
 import {
   CommandDialog,
@@ -107,10 +112,14 @@ export function CommandPalette() {
       <CommandInput placeholder="Jump to a section or open a link…" />
       <CommandList>
         <CommandEmpty>No matches.</CommandEmpty>
-        <CommandGroup heading="Navigate">
+        <CommandGroup heading="Home page">
           <CommandItem onSelect={() => goToSection("home")}>
             <Home className="mr-2 h-4 w-4" />
             Home
+          </CommandItem>
+          <CommandItem onSelect={() => goToSection("experience")}>
+            <Briefcase className="mr-2 h-4 w-4" />
+            Experience
           </CommandItem>
           <CommandItem onSelect={() => goToSection("projects")}>
             <FolderKanban className="mr-2 h-4 w-4" />
@@ -120,9 +129,28 @@ export function CommandPalette() {
             <Boxes className="mr-2 h-4 w-4" />
             Architecture
           </CommandItem>
+          <CommandItem onSelect={() => goToSection("building")}>
+            <Hammer className="mr-2 h-4 w-4" />
+            Currently building
+          </CommandItem>
+          <CommandItem onSelect={() => goToSection("status")}>
+            <Gauge className="mr-2 h-4 w-4" />
+            At a glance
+          </CommandItem>
+          <CommandItem onSelect={() => goToSection("contact")}>
+            <Mail className="mr-2 h-4 w-4" />
+            Contact
+          </CommandItem>
+        </CommandGroup>
+        <CommandSeparator />
+        <CommandGroup heading="Engineering hub">
           <CommandItem onSelect={goEngineeringHome}>
             <Layers className="mr-2 h-4 w-4" />
-            Engineering page
+            Engineering overview
+          </CommandItem>
+          <CommandItem onSelect={() => goEngineeringHash("about")}>
+            <User className="mr-2 h-4 w-4" />
+            About
           </CommandItem>
           <CommandItem onSelect={() => goEngineeringHash("activity")}>
             <Activity className="mr-2 h-4 w-4" />
@@ -132,13 +160,13 @@ export function CommandPalette() {
             <Sparkles className="mr-2 h-4 w-4" />
             Skills
           </CommandItem>
-          <CommandItem onSelect={() => goToSection("contact")}>
-            <Mail className="mr-2 h-4 w-4" />
-            Contact
-          </CommandItem>
           <CommandItem onSelect={() => goEngineeringHash("now")}>
             <Timer className="mr-2 h-4 w-4" />
             Now
+          </CommandItem>
+          <CommandItem onSelect={() => goEngineeringHash("location")}>
+            <MapPin className="mr-2 h-4 w-4" />
+            Location
           </CommandItem>
         </CommandGroup>
         <CommandSeparator />
