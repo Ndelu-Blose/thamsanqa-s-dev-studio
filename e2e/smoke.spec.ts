@@ -14,6 +14,12 @@ test.describe("portfolio smoke", () => {
     await expect(page.getByRole("link", { name: "CV", exact: true })).toBeVisible();
   });
 
+  test("/contact redirects to home contact section", async ({ page }) => {
+    await page.goto("/contact");
+    await expect(page).toHaveURL(/\/#contact$/);
+    await expect(page.getByRole("heading", { name: /Let's Build Something/i })).toBeVisible();
+  });
+
   test("command palette opens with keyboard shortcut", async ({ page }) => {
     await page.goto("/");
     await page.keyboard.press(`${paletteModifier}+KeyK`);

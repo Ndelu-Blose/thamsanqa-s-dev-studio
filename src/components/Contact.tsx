@@ -8,7 +8,11 @@ const MAIL = "mailto:thamsanqandelu0210@gmail.com";
 
 const Contact = () => {
   return (
-    <section id="contact" className="py-16 sm:py-24 lg:py-28 relative scroll-mt-nav sm:scroll-mt-nav-sm">
+    <section
+      id="contact"
+      aria-labelledby="contact-heading"
+      className="py-16 sm:py-24 lg:py-28 relative scroll-mt-nav sm:scroll-mt-nav-sm"
+    >
       <div className="absolute inset-0 bg-dot-pattern opacity-20 pointer-events-none" />
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <motion.div
@@ -18,8 +22,8 @@ const Contact = () => {
           transition={{ duration: 0.6 }}
           className="max-w-2xl mx-auto text-center"
         >
-          <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">Contact</p>
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-5 sm:mb-6 text-foreground">
+          <p className="text-primary font-mono text-sm tracking-widest uppercase mb-3">Get in touch</p>
+          <h2 id="contact-heading" className="text-2xl sm:text-3xl md:text-5xl font-bold mb-5 sm:mb-6 text-foreground">
             Let&apos;s Build Something <span className="text-primary">Impactful</span>
           </h2>
 

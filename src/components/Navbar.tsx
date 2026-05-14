@@ -21,7 +21,7 @@ function getActiveDesktopNavHref(pathname: string, hash: string, homeSpySectionI
   if (h === "projects") return "/#projects";
   if (h === "contact") return "/#contact";
   if (h === "home") return "/#home";
-  if (h) return "/#home";
+  if (h) return null;
   if (homeSpySectionId === "projects") return "/#projects";
   if (homeSpySectionId === "contact") return "/#contact";
   return "/#home";
