@@ -1,4 +1,4 @@
-import type { ActivityFeedItem } from "@/types/activity-feed";
+import type { ActivityFeedItem } from "../types/activity-feed.js";
 
 type GithubRepoRef = { name?: string };
 

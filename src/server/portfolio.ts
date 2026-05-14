@@ -1,6 +1,6 @@
-import type { ProjectOverride } from "@/content/project-overrides";
-import type { PinnedRepositoryNode } from "@/server/github";
-import type { PortfolioProject } from "@/types/portfolio-project";
+import type { ProjectOverride } from "../content/project-overrides.js";
+import type { PinnedRepositoryNode } from "./github.js";
+import type { PortfolioProject } from "../types/portfolio-project.js";
 
 function defaultColorFromRepoName(name: string): string {
   let h = 0;

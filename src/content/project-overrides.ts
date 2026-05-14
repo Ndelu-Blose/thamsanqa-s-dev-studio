@@ -1,4 +1,4 @@
-import type { PortfolioProject } from "@/types/portfolio-project";
+import type { PortfolioProject } from "../types/portfolio-project.js";
 
 /**
  * Keyed by exact GitHub repository name (case-sensitive).

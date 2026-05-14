@@ -1,4 +1,4 @@
-import type { PortfolioProject } from "@/types/portfolio-project";
+import type { PortfolioProject } from "../types/portfolio-project.js";
 
 /** Used when GitHub env is missing or the sync API fails */
 export const fallbackPortfolioProjects: PortfolioProject[] = [

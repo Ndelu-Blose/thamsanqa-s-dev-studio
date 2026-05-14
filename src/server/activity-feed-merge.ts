@@ -1,5 +1,5 @@
-import type { ManualUpdate } from "@/content/manual-updates";
-import type { ActivityFeedItem } from "@/types/activity-feed";
+import type { ManualUpdate } from "../content/manual-updates.js";
+import type { ActivityFeedItem } from "../types/activity-feed.js";
 
 function manualDateToIso(date: string): string {
   const parsed = Date.parse(date);
